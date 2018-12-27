@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
@@ -41,6 +42,37 @@ public class Algorithms
 		TOTAL_DISTANCE_ANGEL_LON = CORNER_LON - ORIGIN_LON;
 		TOTAL_DISTANCE_ANGEL_LAT = CORNER_LAT - ORIGIN_LAT;
 	}
+
+
+	public Game create_game(ArrayList<String> my_string_list)
+	{
+		Game temp_game = new Game();
+		for (String entity : my_string_list)
+		{
+			String[] values = entity.split(",");
+			switch(values[0])
+			{
+				case "M": temp_game.setMypackman(new MyPackman(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
+				break;
+				case "P": temp_game.getPackman_list().add(new Packman(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
+				break;
+				case "G": temp_game.getGhost_list().add(new Ghost(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
+				break;
+				case "F": temp_game.getFruit_list().add(new Fruit(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) ) );
+				break;
+				case "B": temp_game.getBox_list().add(new Box(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])),new Point3D(Double.parseDouble(values[5]) ,Double.parseDouble(values[6]) , Double.parseDouble(values[7])) , Double.parseDouble(values[8]) , Double.parseDouble(values[9]) ) );
+				break;
+				default : continue;
+			}
+		}
+		return temp_game;
+	}
+
+
+
+
+
+
 	/**
 	 * This function converts from a pixel point to a gps point
 	 * @param pixel current pixel point
@@ -158,7 +190,7 @@ public class Algorithms
 		double max =0;
 		for(Path path : paths)
 			max = (max<path.get_total_time()) ? path.get_total_time() : max;
-		return max;
+			return max;
 	}
 
 	/**

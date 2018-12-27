@@ -21,11 +21,11 @@ import Robot.Play;
 public class Ex4_Main_Example {
 	public static void main(String[] args) {
 		// 1) Create a "play" from a file (attached to Ex4)
-		String file_name = "data/Ex4_OOP_example1.csv";
+		String file_name = "data/Ex4_OOP_example6.csv";
 		Play play1 = new Play(file_name);
-		
+		//System.out.println(play1.getBoundingBox());
 		// 2) Set your ID's - of all the group members
-		play1.setIDs(1111,2222,3333);
+		play1.setIDs(01110100, 01110010, 01111001);
 		
 		// 3)Get the GPS coordinates of the "arena"
 		String map_data = play1.getBoundingBox();
@@ -47,6 +47,7 @@ public class Ex4_Main_Example {
 		
 		// 7) "Play" as long as there are "fruits" and time
 		for(int i=0;i<10;i++) {
+			// play1.isrunning
 			
 		// 7.1) this is the main command to the player (on the server side)
 			play1.rotate(36*i); 
