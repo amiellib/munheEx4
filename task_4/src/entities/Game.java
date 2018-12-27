@@ -9,8 +9,13 @@ import java.util.ArrayList;
  */
 public class Game {
 
+	MyPackman mypackman;
 	ArrayList<Fruit> fruit_list = new ArrayList<Fruit>();
 	ArrayList<Packman> packman_list = new ArrayList<Packman>();
+	ArrayList<Box> box_list = new ArrayList<Box>();
+	ArrayList<Ghost> ghost_list = new ArrayList<Ghost>();
+
+	
 	double speed_rate = 10;
 	/**
 	 * get friut_list
@@ -34,6 +39,24 @@ public class Game {
 		return speed_rate;
 	}
 
+	public MyPackman getMypackman() {
+		return mypackman;
+	}
+	public void setMypackman(MyPackman mypackman) {
+		this.mypackman = mypackman;
+	}
+	public ArrayList<Box> getBox_list() {
+		return box_list;
+	}
+	public void setBox_list(ArrayList<Box> box_list) {
+		this.box_list = box_list;
+	}
+	public ArrayList<Ghost> getGhost_list() {
+		return ghost_list;
+	}
+	public void setGhost_list(ArrayList<Ghost> ghost_list) {
+		this.ghost_list = ghost_list;
+	}
 	/**
 	 * 
 	 * @param fruit_list is the games fruit list
@@ -70,6 +93,15 @@ public class Game {
 		{
 			temp_game.fruit_list.add(new Fruit (this_fruit.getFruit_id() , this_fruit.getGps() , this_fruit.getWeight()));
 		}	
+		for (Ghost this_ghost : ghost_list)
+		{
+			temp_game.getGhost_list().add(new Ghost (this_ghost.getPackman_id() , this_ghost.getGps() , this_ghost.getRange()));
+		}	
+		for (Box this_box : box_list)
+		{
+			temp_game.getBox_list().add(new Box (this_box.getFruit_id() , this_box.getGps1() ,this_box.getGps2() , this_box.getRange() , this_box.getWeight() ));
+		}	
+		temp_game.mypackman = new MyPackman(mypackman);
 		return temp_game;
 	}
 	/**
