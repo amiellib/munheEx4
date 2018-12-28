@@ -109,9 +109,14 @@ public class Game {
 	 */
 	@Override
 	public String toString() {
-		return "Game [fruit_list=" + fruit_list + ", packman_list=" + packman_list + ", speed_rate=" + speed_rate + "]";
+		return "Game [" + (mypackman != null ? "mypackman=" + mypackman + ", " : "")
+				+ (fruit_list != null ? "fruit_list=" + fruit_list + ", " : "")
+				+ (packman_list != null ? "packman_list=" + packman_list + ", " : "")
+				+ (box_list != null ? "box_list=" + box_list + ", " : "")
+				+ (ghost_list != null ? "ghost_list=" + ghost_list + ", " : "") + "speed_rate=" + speed_rate + "]";
 	}
 	
+
 
 
 	
