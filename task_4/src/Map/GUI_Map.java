@@ -30,11 +30,11 @@ public class GUI_Map  extends JFrame
 	private Algorithms algo; 
 	private JMenuBar menuBarstatic;
 	private JMenu fileMenu , game_menu ,speed , accuracy;
-	private JMenuItem clean_map , slowdown , fast_forwards , exit , run , save , fruit , packman , new_file , open, accuracy_level;
+	private JMenuItem clean_map , slowdown , fast_forwards , exit , run , save , fruit , packman , new_file , open, accuracy_level,my_packman;
 //	private Double packman_speed = 1.0 , packman_range =1.0 , fruit_weight =1.0 , packman_height = 0.0 , fruit_height = 0.0 ,max_path_time = 0.0;
-	private double accuracy_rate = 1.0;
+//	private double accuracy_rate = 1.0;
 	private Thread thread;
-	private int slowest_packman_id_array ,path_counter;
+//	private int slowest_packman_id_array ,path_counter;
 	JTextField max_time;
 	public GUI_Map(Map map) throws IOException 
 	{
@@ -47,11 +47,11 @@ public class GUI_Map  extends JFrame
 
 		accuracy= new JMenu("Accuracy");
 		fileMenu = new JMenu("File");
-	//	game_menu = new JMenu("game"); 
+		game_menu = new JMenu("game"); 
 		speed = new JMenu("Speed"); 
 		//csv=new JMenu("improt/export");
 		menuBarstatic.add(fileMenu); 
-	//	menuBarstatic.add(game_menu); 
+		menuBarstatic.add(game_menu); 
 		menuBarstatic.add(speed); 
 		//menuBarstatic.add(csv);
 		menuBarstatic.add(accuracy);
@@ -72,8 +72,8 @@ public class GUI_Map  extends JFrame
 		save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		fruit = new JMenuItem("fruit");
 		fruit.setAccelerator(KeyStroke.getKeyStroke('F', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
-		packman = new JMenuItem("packman");
-		packman.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		my_packman = new JMenuItem("my_packman");
+		my_packman.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		new_file = new JMenuItem("new");
 		new_file.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		open = new JMenuItem("open");
@@ -101,7 +101,7 @@ public class GUI_Map  extends JFrame
 		speed.add(fast_forwards);
 
 	//	game_menu.add(fruit);
-	//	game_menu.add(packman);
+		game_menu.add(my_packman);
 	//	game_menu.addSeparator();
 		//	game_menu.add(custom_fruit_weight);
 		//game_menu.add(custom_fruit_height);
@@ -131,7 +131,7 @@ public class GUI_Map  extends JFrame
 		getContentPane().addMouseListener(handler);
 		menuBarstatic.addMouseListener(handler);
 		fruit.addActionListener(handler);
-		packman.addActionListener(handler);
+		my_packman.addActionListener(handler);
 		clean_map.addActionListener(handler);
 		slowdown.addActionListener(handler);
 		fast_forwards.addActionListener(handler);
@@ -176,7 +176,7 @@ public class GUI_Map  extends JFrame
 		}
 		if (run_program)
 		{
-			slowest_packman_id_array = algo.get_max_path(paths);
+//			slowest_packman_id_array = algo.get_max_path(paths);
 			for(Path path :paths)
 			{
 				g.setColor(path.getColor());
@@ -257,6 +257,8 @@ public class GUI_Map  extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
+		
+		
 	/*		if(e.getSource().equals(fruit)) {
 				is_fruit = true;
 				is_packman = false;
@@ -265,6 +267,7 @@ public class GUI_Map  extends JFrame
 				is_fruit = false;
 				is_packman = true;			
 			}
+			*/
 			if(e.getSource()==clean_map) 
 			{
 				reset_params();
@@ -284,7 +287,7 @@ public class GUI_Map  extends JFrame
 			{
 				System.exit(0);
 			}
-			if(e.getSource()==run) 
+		/*	if(e.getSource()==run) 
 			{
 				if (thread!=null )
 					thread.stop();
@@ -299,6 +302,7 @@ public class GUI_Map  extends JFrame
 				};
 				thread.start();
 			}
+			
 			if(e.getSource()==save) 
 			{
 				try {
@@ -312,6 +316,7 @@ public class GUI_Map  extends JFrame
 					e1.printStackTrace();
 				}
 			}
+			*/
 			if(e.getSource()==new_file) 
 			{
 
@@ -323,7 +328,8 @@ public class GUI_Map  extends JFrame
 			if(e.getSource()==open) 
 			{
 				reset_params();
-				try {
+				try 
+				{
 					JFrame parentFrame = new JFrame();
 					JFileChooser fileChooser = new JFileChooser();
 					fileChooser.setDialogTitle("Specify a file to open");
@@ -331,10 +337,12 @@ public class GUI_Map  extends JFrame
 						my_game = algo.get_data_from_csv(fileChooser.getSelectedFile().toString());
 						repaint();
 					}
-				} catch (IOException e1) {
+				} catch (IOException e1)
+				{
 					e1.printStackTrace();
 				}
-			}/*
+			}
+		}/*
 			if(e.getSource()==kml)
 			{
 				paths = algo.TSP(my_game ,accuracy_rate);
@@ -398,7 +406,7 @@ public class GUI_Map  extends JFrame
 				}
 			}
 			 */
-			if(e.getSource()==accuracy_level)
+	/*		if(e.getSource()==accuracy_level)
 			{
 				try
 				{
@@ -409,7 +417,8 @@ public class GUI_Map  extends JFrame
 				}
 			}
 		}
-	
+	*/
+			
 	/**
 	 * This is the new thread that repaints the movement of the packman
 	 */
