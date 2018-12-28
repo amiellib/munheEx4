@@ -14,13 +14,13 @@ public class Box {
 	private Point3D Gps1;
 	private Point3D Gps2;
 	private double weight;
-	private Image fruit_image;
+	private Image box_image;
 	private double range;
 //	private String[] fruits = {"src/resources/fruit.png" , "src/resources/fruit2.png" ,"src/resources/fruit3.png" ,"src/resources/fruit4.png" ,"src/resources/fruit5.png"};
 	Random randomNum = new Random();
 	/**
 	 * 
-	 * @param fruit_id is the fruit id
+	 * @param box_id is the box id
 	 * @param gps is the gps location
 	 * @param weight is the fruit value
 	 */
@@ -38,7 +38,7 @@ public class Box {
 		}
 */	}
 /**
- *  get fruit Gps
+ *  get box Gps
  * @return Gps
  */
 	public Point3D getGps1() {
@@ -48,14 +48,14 @@ public class Box {
 		return Gps2;
 	}
 	/**
-	 *  get fruit image
-	 * @return fruit image
+	 *  get box image
+	 * @return box image
 	 */
-	public Image getFruit_image() {
-		return fruit_image;
+	public Image getBox_image() {
+		return box_image;
 	}
 	/**
-	 *  get fruit weight
+	 *  get box weight
 	 * @return weight
 	 */
 	public double getWeight() {
@@ -69,24 +69,24 @@ public class Box {
 		this.weight = weight;
 	}
 	/**
-	 * get friut id
-	 * @return fruit id
+	 * get box id
+	 * @return box id
 	 */
-	public int getFruit_id() {
+	public int getBox_id() {
 		return box_id;
 	}
 
 	/**
 	 * 
-	 * @param fruit_id fruit id
+	 * @param box_id box id
 	 */
-	public void setFruit_id(int box_id) {
+	public void setbox_id(int box_id) {
 		this.box_id = box_id;
 	}
 
 	/**
 	 * 
-	 * @param gps fruit gps
+	 * @param gps box gps
 	 */
 	public void setGps1(Point3D gps1) {
 		this.Gps1 = gps1;
@@ -107,10 +107,10 @@ public class Box {
 	
 	@Override
 	/**
-	 * @return string of fruit
+	 * @return string of box
 	 */
 	public String toString() {
-		return "Fruit [fruit_id=" + box_id + ", Gps1=" + Gps1 +  ", Gps2=" + Gps2 + ", weight=" + weight + ", fruit_image=" + fruit_image
+		return "box [box_id=" + box_id + ", Gps1=" + Gps1 +  ", Gps2=" + Gps2 + ", weight=" + weight + ", box_image=" + box_image
 				+ "]";
 	}
 	
