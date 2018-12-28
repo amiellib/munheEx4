@@ -22,10 +22,10 @@ public class Ghost {
 
 	/**
 	 * 
-	 * @param packman_id packmans id
-	 * @param gps packmans gps location
-	 * @param speed packmans speed
-	 * @param range packmans range
+	 * @param ghost_id ghosts id
+	 * @param gps ghosts gps location
+	 * @param speed ghosts speed
+	 * @param range ghosts range
 	 */
 	public Ghost(int ghost_id ,Point3D gps, double speed , double range) {
 		super();
@@ -40,88 +40,88 @@ public class Ghost {
 		}
 	}
 	/**
-	 * packman range will be 1
-	 * @param packman_id packmans id
-	 * @param gps packmans gps location
-	 * @param speed packmans speed
+	 * ghost range will be 1
+	 * @param ghost_id ghosts id
+	 * @param gps ghosts gps location
+	 * @param speed ghosts speed
 	 */
 	public Ghost(int ghost_id , Point3D gps, double speed) {
 		this(ghost_id , gps,speed,1);
 	}
 	/**
-	 * packman range and speed will be 1
-	 * @param packman_id packmans id
+	 * ghost range and speed will be 1
+	 * @param ghost_id ghosts id
 	 * @param gps gps location
 	 */
 	public Ghost(int ghost_id  , Point3D gps) {
 		this(ghost_id , gps ,1 ,1);
 	}
 	/**
-	 * get packman GPs
+	 * get ghost GPs
 	 * @return  Gps
 	 */
 	public Point3D getGps() {
 		return gps;
 	}
 	/**
-	 * get packman speed
+	 * get ghost speed
 	 * @return speed
 	 */
 	public double getSpeed() {
 		return speed;
 	}
 	/**
-	 * get packman range
+	 * get ghost range
 	 * @return range
 	 */
 	public double getRange() {
 		return range;
 	}
 	/**
-	 *sets packman range
-	 * @param range packman range
+	 *sets ghost range
+	 * @param range ghost range
 	 */
 	public void setRange(double range) {
 		this.range = range;
 	}
 	/**
-	 * get packman_image
-	 * @return packman_image
+	 * get ghost_image
+	 * @return ghost_image
 	 */
-	public Image getPackman_image() {
+	public Image getGhost_image() {
 		return ghost_image;
 	}
 	/**
-	 * sets packman_image
-	 * @param packman_image packman image
+	 * sets ghost_image
+	 * @param ghost_image ghost image
 	 */
-	public void setPackman_image(Image ghost_image) {
+	public void setGhost_image(Image ghost_image) {
 		this.ghost_image = ghost_image;
 	}
 	/**
-	 * sets packman Gps
-	 * @param gps packman Gps
+	 * sets ghost Gps
+	 * @param gps ghost Gps
 	 */
 	public void setGps(Point3D gps) {
 		this.gps = gps;
 	}
 	/**
-	 * sets packman speed
-	 * @param speed packman speed	
+	 * sets ghost speed
+	 * @param speed ghost speed	
 	 */
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 	/**
-	 * get packman_id
-	 * @return packman_id
+	 * get ghost_id
+	 * @return ghost_id
 	 */
-	public int getPackman_id() {
+	public int getGhost_id() {
 		return ghost_id;
 	}
 	/**
-	 * set packman_id
-	 * @param packman_id packman id
+	 * set ghost_id
+	 * @param ghost_id ghost id
 	 */
 	public void setGhost_id(int ghost_id) {
 		this.ghost_id = ghost_id;
@@ -131,8 +131,8 @@ public class Ghost {
 	 */
 	@Override
 	public String toString() {
-		return "Packman [packman_id=" + ghost_id + ", gps=" + gps + ", range=" + range + ", speed=" + speed
-				+ ", packman_image=" + ghost_image + "]";
+		return "ghost [ghost_id=" + ghost_id + ", gps=" + gps + ", range=" + range + ", speed=" + speed
+				+ ", ghost_image=" + ghost_image + "]";
 	}
 	
 	
