@@ -34,7 +34,7 @@ public class Ghost {
 		this.range = range;
 		this.speed = speed;
 		try {
-			ghost_image = ImageIO.read(new File("src/resources/packman.png"));
+			ghost_image = ImageIO.read(new File("src/resources/ghost_1.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
