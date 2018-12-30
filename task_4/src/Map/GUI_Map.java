@@ -29,7 +29,7 @@ public class GUI_Map  extends JFrame
 	private Path [] paths;
 	private Algorithms algo; 
 	private JMenuBar menuBarstatic;
-	private JMenu fileMenu , game_menu ,speed , accuracy;
+	private JMenu fileMenu , game_menu ,speed , accuracy , csv;
 	private JMenuItem clean_map , slowdown , fast_forwards , exit , run , save , fruit , packman , new_file , open, accuracy_level,my_packman;
 	//	private Double packman_speed = 1.0 , packman_range =1.0 , fruit_weight =1.0 , packman_height = 0.0 , fruit_height = 0.0 ,max_path_time = 0.0;
 	//	private double accuracy_rate = 1.0;
@@ -49,11 +49,11 @@ public class GUI_Map  extends JFrame
 		fileMenu = new JMenu("File");
 		game_menu = new JMenu("game"); 
 		speed = new JMenu("Speed"); 
-		//csv=new JMenu("improt/export");
+		csv=new JMenu("improt/export");
 		menuBarstatic.add(fileMenu); 
 		menuBarstatic.add(game_menu); 
 		menuBarstatic.add(speed); 
-		//menuBarstatic.add(csv);
+		menuBarstatic.add(csv);
 		//	menuBarstatic.add(accuracy);
 		//		menuBarstatic.add(max_time);
 
@@ -76,7 +76,7 @@ public class GUI_Map  extends JFrame
 		my_packman.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		//	new_file = new JMenuItem("new");
 		//	new_file.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
-		//	open = new JMenuItem("open");
+			open = new JMenuItem("open");
 		//	open.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		/*		kml = new JMenuItem("make kml");
 		kml.setAccelerator(KeyStroke.getKeyStroke('K', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
@@ -118,9 +118,9 @@ public class GUI_Map  extends JFrame
 		//	fileMenu.add(clean_map);
 		fileMenu.addSeparator();
 		fileMenu.add(exit);
-		/*
+		
 		csv.add(open);
-		csv.addSeparator();
+		/*csv.addSeparator();
 		csv.add(save);
 		csv.addSeparator();
 		csv.add(kml);
@@ -139,7 +139,7 @@ public class GUI_Map  extends JFrame
 		run.addActionListener(handler);
 	//	save.addActionListener(handler);
 	//	new_file.addActionListener(handler);
-	//	open.addActionListener(handler);
+		open.addActionListener(handler);
 		/*		kml.addActionListener(handler);
 		custom_packman_range.addActionListener(handler);
 		custom_packman_speed.addActionListener(handler);
@@ -147,7 +147,7 @@ public class GUI_Map  extends JFrame
 		custom_packman_height.addActionListener(handler);
 		custom_fruit_height.addActionListener(handler);
 		 */
-		accuracy_level.addActionListener(handler);
+//		accuracy_level.addActionListener(handler);
 
 	}
 	/**
@@ -166,6 +166,11 @@ public class GUI_Map  extends JFrame
 	public void paint(Graphics g) 
 	{
 		g.drawImage(backgroundImage.getScaledInstance(this.getWidth(),this.getHeight(),backgroundImage.SCALE_SMOOTH), 0, 0, null);
+
+		for(Box box :my_game.getBox_list())
+		{
+			g.drawImage(box.getBox_image(),(int) (algo.convert_gps_to_pixel(box.getGps1(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(box.getGps1(), getHeight(), getWidth()).y())-5,30, 30, null);
+		}
 		for (Fruit fruit : my_game.getFruit_list())
 		{
 			g.drawImage(fruit.getFruit_image(),(int) (algo.convert_gps_to_pixel(fruit.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(fruit.getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
@@ -178,10 +183,9 @@ public class GUI_Map  extends JFrame
 		{
 			g.drawImage(ghost.getGhost_image(),(int) (algo.convert_gps_to_pixel(ghost.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(ghost.getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
 		}
-		for(Box box :my_game.getBox_list())
-		{
-//to do
-		}
+		if (my_game.getMypackman()!=null)
+			g.drawImage(my_game.getMypackman().getPackman_image(),(int) (algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
+
 		//to do MyPackman
 	//		if (run_program)
 	//	{
@@ -230,6 +234,16 @@ public class GUI_Map  extends JFrame
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
+			if (my_game.getMypackman()==null)
+			{
+				my_game.setMypackman(new MyPackman(0, algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0), getHeight(), getWidth()) , 20 , 1));
+				my_game.getMypackman().setGps(algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0), getHeight(), getWidth()));
+			}
+			else
+			{
+				//setvector =function
+			}
+	//		my_game.getFruit_list().add(new Fruit(fruit_id, point , fruit_weight ));
 			repaint();
 		}
 		/*
@@ -336,14 +350,14 @@ public class GUI_Map  extends JFrame
 			}
 			if(e.getSource()==open) 
 			{
-				reset_params();
+	//			reset_params();
 				try 
 				{
 					JFrame parentFrame = new JFrame();
 					JFileChooser fileChooser = new JFileChooser();
 					fileChooser.setDialogTitle("Specify a file to open");
 					if (fileChooser.showOpenDialog(parentFrame) == JFileChooser.APPROVE_OPTION) {
-						my_game = algo.get_data_from_csv(fileChooser.getSelectedFile().toString());
+						my_game = algo.get_data_from_csv_4(fileChooser.getSelectedFile().toString());
 						repaint();
 					}
 				} catch (IOException e1)

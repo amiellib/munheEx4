@@ -69,7 +69,20 @@ public class Algorithms
 	}
 
 
-
+	public Game get_data_from_csv_4(String path_of_csv) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(path_of_csv));
+		br.readLine();
+		String line = br.readLine();
+		ArrayList<String> my_string_list = new ArrayList<String>();
+		while (line != null && !line.isEmpty()) {
+			if((line.replaceAll(",","")).replaceAll(" ","").isEmpty())
+				break;
+			my_string_list.add(line);
+			line = br.readLine();
+		}
+		return create_game(my_string_list);
+	}
 
 
 

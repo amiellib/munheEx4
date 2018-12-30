@@ -36,7 +36,7 @@ public class MyPackman {
 		this.range = range;
 		this.speed = speed;
 		try {
-			packman_image = ImageIO.read(new File("src/resources/packman.png"));
+			packman_image = ImageIO.read(new File("src/resources/evil_packman.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
