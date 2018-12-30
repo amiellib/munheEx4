@@ -112,7 +112,7 @@ public class GUI_Map  extends JFrame
 		//	game_menu.addSeparator();
 
 
-		fileMenu.add(new_file);
+	//	fileMenu.add(new_file);
 		fileMenu.addSeparator();
 		fileMenu.add(run);
 		//	fileMenu.add(clean_map);
@@ -130,16 +130,16 @@ public class GUI_Map  extends JFrame
 		Handler handler = new Handler();
 		getContentPane().addMouseListener(handler);
 		menuBarstatic.addMouseListener(handler);
-		fruit.addActionListener(handler);
+	//	fruit.addActionListener(handler);
 		my_packman.addActionListener(handler);
-		clean_map.addActionListener(handler);
+	//	clean_map.addActionListener(handler);
 		slowdown.addActionListener(handler);
 		fast_forwards.addActionListener(handler);
 		exit.addActionListener(handler);
 		run.addActionListener(handler);
-		save.addActionListener(handler);
-		new_file.addActionListener(handler);
-		open.addActionListener(handler);
+	//	save.addActionListener(handler);
+	//	new_file.addActionListener(handler);
+	//	open.addActionListener(handler);
 		/*		kml.addActionListener(handler);
 		custom_packman_range.addActionListener(handler);
 		custom_packman_speed.addActionListener(handler);
@@ -183,10 +183,10 @@ public class GUI_Map  extends JFrame
 //to do
 		}
 		//to do MyPackman
-			if (run_program)
-		{
+	//		if (run_program)
+	//	{
 			//			slowest_packman_id_array = algo.get_max_path(paths);
-			for(Path path :paths)
+		/*	for(Path path :paths)
 			{
 				g.setColor(path.getColor());
 				for(int i=0;i<path.getLocations().size()-1;i++)
@@ -195,7 +195,7 @@ public class GUI_Map  extends JFrame
 					Point3D end = algo.convert_gps_to_pixel(path.getLocations().get(i+1), getHeight(), getWidth());
 					g.drawLine((int)start.x(), (int)start.y(), (int)end.x(),(int) end.y());
 				}
-			}/*
+			}
 			try {
 				packman_image_eating_temp = get_packman();
 			} catch (IOException e1) {
@@ -215,7 +215,7 @@ public class GUI_Map  extends JFrame
 				path_counter++;
 			}
 			 */
-		}
+		//}
 		//		max_time.setText("Max Path Time:" + max_path_time);
 		menuBarstatic.repaint();
 	}
