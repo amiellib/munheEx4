@@ -42,8 +42,6 @@ public class Algorithms
 		TOTAL_DISTANCE_ANGEL_LON = CORNER_LON - ORIGIN_LON;
 		TOTAL_DISTANCE_ANGEL_LAT = CORNER_LAT - ORIGIN_LAT;
 	}
-
-
 	public Game create_game(ArrayList<String> my_string_list)
 	{
 		Game temp_game = new Game();
@@ -60,7 +58,7 @@ public class Algorithms
 				break;
 				case "F": temp_game.getFruit_list().add(new Fruit(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) ) );
 				break;
-				case "B": temp_game.getBox_list().add(new Box(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])),new Point3D(Double.parseDouble(values[5]) ,Double.parseDouble(values[6]) , Double.parseDouble(values[7])) , Double.parseDouble(values[8]) , Double.parseDouble(values[9]) ) );
+				case "B": temp_game.getBox_list().add(new Box(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])),new Point3D(Double.parseDouble(values[5]) ,Double.parseDouble(values[6]) , Double.parseDouble(values[7])) , Double.parseDouble(values[8])) );
 				break;
 				default : continue;
 			}
@@ -68,6 +66,14 @@ public class Algorithms
 		return temp_game;
 	}
 
+	public double get_box_X_percentage(Point3D lon1 , Point3D lon2)
+	{
+		return (convert_gps_to_meters(new Point3D(ORIGIN_LON ,lon1.y() , 0)).x() - convert_gps_to_meters(new Point3D(ORIGIN_LON ,lon2.y() , 0)).x()) / TOTAL_DISTANCE_X;
+	}
+	public double get_box_Y_percentage(Point3D lat1 , Point3D lat2)
+	{
+		return (convert_gps_to_meters(new Point3D(lat1.x() ,ORIGIN_LAT , 0)).y() - convert_gps_to_meters(new Point3D(lat2.x() ,ORIGIN_LAT , 0)).y()) / TOTAL_DISTANCE_Y;
+	}
 
 	public Game get_data_from_csv_4(String path_of_csv) throws IOException
 	{
