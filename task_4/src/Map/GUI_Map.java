@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -23,9 +25,9 @@ public class GUI_Map  extends JFrame
 {
 	private String[] packmans = {"src/resources/packman_eating_3.png" , "src/resources/packman_eating2.png" ,"src/resources/packman_eating1.png" , "src/resources/packman_eating2.png" };
 	private String MyPackman ="";
-	private boolean run_program = false;
+	private boolean loaded = false;
 	//	private int fruit_id = 0 , packman_id =0 , packman_counter =0 , global_time;
-	private Game my_game = new Game();
+	static private Game my_game = new Game();
 	private BufferedImage backgroundImage;
 	private Algorithms algo; 
 	private JMenuBar menuBarstatic;
@@ -37,8 +39,9 @@ public class GUI_Map  extends JFrame
 	//	private int slowest_packman_id_array ,path_counter;
 	private JTextField max_time;
 	private Point3D mypackman_vector = new Point3D(0,0,0);
-	private Play play1 ;
-	private double time =100000.0;
+	static private Play play1 ;
+	private double time =100000.0 , mypackman_angle =0.0;
+	ArrayList<String> board_data ;
 	public GUI_Map(Map map) throws IOException 
 	{
 		super("PackMan Map");
@@ -139,6 +142,19 @@ public class GUI_Map  extends JFrame
 	 */
 	public void paint(Graphics g) 
 	{
+		if (loaded)
+		{
+			play1.rotate(mypackman_angle);
+			my_game = algo.create_game(play1.getBoard());
+/*			String info = play1.getStatistics();
+			System.out.println(info);
+			board_data = play1.getBoard();
+			for(int a=0;a<board_data.size();a++) {
+				System.out.println(board_data.get(a));
+			}
+*/		}
+
+		
 		g.drawImage(backgroundImage.getScaledInstance(this.getWidth(),this.getHeight(),backgroundImage.SCALE_SMOOTH), 0, 0, null);
 
 		for(Box box :my_game.getBox_list())
@@ -147,18 +163,18 @@ public class GUI_Map  extends JFrame
 		}
 		for (Fruit fruit : my_game.getFruit_list())
 		{
-			g.drawImage(fruit.getFruit_image(),(int) (algo.convert_gps_to_pixel(fruit.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(fruit.getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
+			g.drawImage(fruit.getFruit_image(),(int) (algo.convert_gps_to_pixel(fruit.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(fruit.getGps(), getHeight(), getWidth()).y())-5,10, 10, null);
 		}
 		for(Packman packman :my_game.getPackman_list())
 		{
-			g.drawImage(packman.getPackman_image(),(int) (algo.convert_gps_to_pixel(packman.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(packman.getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
+			g.drawImage(packman.getPackman_image(),(int) (algo.convert_gps_to_pixel(packman.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(packman.getGps(), getHeight(), getWidth()).y())-5,10, 10, null);
 		}
 		for(Ghost ghost :my_game.getGhost_list())
 		{
-			g.drawImage(ghost.getGhost_image(),(int) (algo.convert_gps_to_pixel(ghost.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(ghost.getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
+			g.drawImage(ghost.getGhost_image(),(int) (algo.convert_gps_to_pixel(ghost.getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(ghost.getGps(), getHeight(), getWidth()).y())-5,10, 10, null);
 		}
 		if (my_game.getMypackman()!=null)
-			g.drawImage(my_game.getMypackman().getPackman_image(),(int) (algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
+			g.drawImage(my_game.getMypackman().getPackman_image(),(int) (algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).y())-5,10, 10, null);
 
 		//		if (run_program)
 		//	{
@@ -209,17 +225,15 @@ public class GUI_Map  extends JFrame
 		{
 			if (my_game.getMypackman()==null)
 			{
-				my_game.setMypackman(new MyPackman(0, algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0), getHeight(), getWidth()) , 20 , 1));
-				my_game.getMypackman().setGps(algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0), getHeight(), getWidth()));
-//				play1.setInitLocation(my_game.getMypackman().getGps().x(),my_game.getMypackman().getGps().y());
-
+				my_game.setMypackman(new MyPackman(0, algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0), getHeight(), getWidth()) , 20 , 1));
+				my_game.getMypackman().setGps(algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0), getHeight(), getWidth()));
+				play1.setInitLocation(my_game.getMypackman().getGps().x(),my_game.getMypackman().getGps().y());
+				repaint();
 			}
 			else
 			{
-				mypackman_vector = algo.get_vector(my_game.getMypackman() , algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0) ,getHeight(), getWidth()));
-				System.out.println(mypackman_vector);
+				mypackman_angle =algo.get_angle(my_game.getMypackman(),  algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0) ,getHeight(), getWidth()));
 			}
-			repaint();
 		}
 		/*
 		{
@@ -291,10 +305,10 @@ public class GUI_Map  extends JFrame
 					thread.stop();
 				repaint();
 				time =100000.0;
-	//			play1.start(); // default max time is 100 seconds (1000*100 ms).
+				play1.start(); // default max time is 100 seconds (1000*100 ms).
 				//			paths = algo.TSP(my_game ,accuracy_rate);
 				//			max_path_time = algo.get_max_path_time(paths);
-				run_program =true;
+				loaded =true;
 				thread = new Thread() 
 				{
 					@Override
@@ -336,8 +350,8 @@ public class GUI_Map  extends JFrame
 					fileChooser.setDialogTitle("Specify a file to open");
 					if (fileChooser.showOpenDialog(parentFrame) == JFileChooser.APPROVE_OPTION) {
 						my_game = algo.get_data_from_csv_4(fileChooser.getSelectedFile().toString());
-	//					play1 = new Play(fileChooser.getSelectedFile().toString());
-	//					play1.setIDs(01110100, 01110010, 01111001);
+						play1 = new Play(fileChooser.getSelectedFile().toString());
+						play1.setIDs(01110100, 01110010, 01111001);
 						repaint();
 					}
 				} catch (IOException e1)
@@ -432,12 +446,12 @@ public class GUI_Map  extends JFrame
 		{
 			try
 			{
-				while(time>=0)
+				while(time>=0 && my_game.getFruit_list().size()>0)
 				{		
 					
 					repaint();
 					Thread.sleep(1000);
-					my_game.getMypackman().setGps(algo.move_mypackman(my_game.getMypackman() , mypackman_vector));
+					time-=1000;
 				}
 				repaint();
 			}catch (InterruptedException e) {

@@ -99,6 +99,17 @@ public class Algorithms
 		return new Point3D (vect.x() /t , vect.y()/t , vect.z()/t);
 	
 	}
+	public double get_angle(MyPackman mypackman ,Point3D mouse)
+	{
+		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
+		Point3D meters_end = convert_gps_to_meters(mouse);
+		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
+		if (vect.x()>0)
+			return 90 + Math.toDegrees(Math.atan(vect.y()/vect.x()));
+		else 
+			return 270 + Math.toDegrees(Math.atan(vect.y()/vect.x()));
+	
+	}
 	public Point3D move_mypackman(MyPackman mypackman ,Point3D vect)
 	{
 		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());	
