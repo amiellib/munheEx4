@@ -15,8 +15,6 @@ public class Box {
 	private Point3D Gps2;
 	private double weight;
 	private Image box_image;
-	private double range;
-//	private String[] fruits = {"src/resources/fruit.png" , "src/resources/fruit2.png" ,"src/resources/fruit3.png" ,"src/resources/fruit4.png" ,"src/resources/fruit5.png"};
 	Random randomNum = new Random();
 	/**
 	 * 
@@ -24,19 +22,18 @@ public class Box {
 	 * @param gps is the gps location
 	 * @param weight is the fruit value
 	 */
-	public Box(int box_id ,Point3D gps1 , Point3D gps2, double weight , double range )
+	public Box(int box_id ,Point3D gps1 , Point3D gps2, double weight )
 	{
 		this.box_id =box_id;
 		this.Gps1=new Point3D(gps1);
 		this.Gps2=new Point3D(gps2);
-		this.range = range;
 		this.weight = weight;
-/*		try {
-			fruit_image = ImageIO.read(new File(fruits[randomNum.nextInt(fruits.length-1)]));
+		try {
+			box_image = ImageIO.read(new File("src/resources/box.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-*/	}
+	}
 /**
  *  get box Gps
  * @return Gps
@@ -95,15 +92,7 @@ public class Box {
 	public void setGps2(Point3D gps2) {
 		this.Gps2 = gps2;
 	}
-	
 
-	public double getRange() {
-		return range;
-	}
-	public void setRange(double range) {
-		this.range = range;
-	}
-	
 	
 	@Override
 	/**

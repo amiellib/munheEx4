@@ -99,7 +99,7 @@ public class Game {
 		}	
 		for (Box this_box : box_list)
 		{
-			temp_game.getBox_list().add(new Box (this_box.getBox_id() , this_box.getGps1() ,this_box.getGps2() , this_box.getRange() , this_box.getWeight() ));
+			temp_game.getBox_list().add(new Box (this_box.getBox_id() , this_box.getGps1() ,this_box.getGps2() , this_box.getWeight() ));
 		}	
 		temp_game.mypackman = new MyPackman(mypackman);
 		return temp_game;
