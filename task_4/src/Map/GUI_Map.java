@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import Algorithems.Algorithms;
 import Geom.Point3D;
+import Robot.Play;
 import entities.*;
 import entities.Box;
 
@@ -25,8 +26,7 @@ public class GUI_Map  extends JFrame
 	private boolean run_program = false;
 	//	private int fruit_id = 0 , packman_id =0 , packman_counter =0 , global_time;
 	private Game my_game = new Game();
-	private BufferedImage backgroundImage , packman_image_eating_temp , evil_packman = ImageIO.read(new File("src/resources/evil_packman.png"));
-	private Path [] paths;
+	private BufferedImage backgroundImage;
 	private Algorithms algo; 
 	private JMenuBar menuBarstatic;
 	private JMenu fileMenu , game_menu ,speed , accuracy , csv;
@@ -35,7 +35,10 @@ public class GUI_Map  extends JFrame
 	//	private double accuracy_rate = 1.0;
 	private Thread thread;
 	//	private int slowest_packman_id_array ,path_counter;
-	JTextField max_time;
+	private JTextField max_time;
+	private Point3D mypackman_vector = new Point3D(0,0,0);
+	private Play play1 ;
+	private double time =100000.0;
 	public GUI_Map(Map map) throws IOException 
 	{
 		super("PackMan Map");
@@ -100,12 +103,12 @@ public class GUI_Map  extends JFrame
 		//	game_menu.addSeparator();
 
 
-	//	fileMenu.add(new_file);
-	//	fileMenu.addSeparator();
+		//	fileMenu.add(new_file);
+		//	fileMenu.addSeparator();
 		fileMenu.add(run);
 		fileMenu.addSeparator();
 		fileMenu.add(exit);
-		
+
 		csv.add(open);
 		/*csv.addSeparator();
 		csv.add(save);
@@ -117,17 +120,17 @@ public class GUI_Map  extends JFrame
 		Handler handler = new Handler();
 		getContentPane().addMouseListener(handler);
 		menuBarstatic.addMouseListener(handler);
-	//	fruit.addActionListener(handler);
+		//	fruit.addActionListener(handler);
 		my_packman.addActionListener(handler);
 		slowdown.addActionListener(handler);
 		fast_forwards.addActionListener(handler);
 		exit.addActionListener(handler);
 		run.addActionListener(handler);
-	//	save.addActionListener(handler);
-	//	new_file.addActionListener(handler);
+		//	save.addActionListener(handler);
+		//	new_file.addActionListener(handler);
 		open.addActionListener(handler);
 
-//		accuracy_level.addActionListener(handler);
+		//		accuracy_level.addActionListener(handler);
 
 	}
 
@@ -157,9 +160,9 @@ public class GUI_Map  extends JFrame
 		if (my_game.getMypackman()!=null)
 			g.drawImage(my_game.getMypackman().getPackman_image(),(int) (algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).y())-5,30, 30, null);
 
-	//		if (run_program)
-	//	{
-			//			slowest_packman_id_array = algo.get_max_path(paths);
+		//		if (run_program)
+		//	{
+		//			slowest_packman_id_array = algo.get_max_path(paths);
 		/*	for(Path path :paths)
 			{
 				g.setColor(path.getColor());
@@ -188,7 +191,7 @@ public class GUI_Map  extends JFrame
 				}
 				path_counter++;
 			}
-			 */
+		 */
 		//}
 		//		max_time.setText("Max Path Time:" + max_path_time);
 		menuBarstatic.repaint();
@@ -208,12 +211,14 @@ public class GUI_Map  extends JFrame
 			{
 				my_game.setMypackman(new MyPackman(0, algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0), getHeight(), getWidth()) , 20 , 1));
 				my_game.getMypackman().setGps(algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0), getHeight(), getWidth()));
+//				play1.setInitLocation(my_game.getMypackman().getGps().x(),my_game.getMypackman().getGps().y());
+
 			}
 			else
 			{
-				//setvector =function
+				mypackman_vector = algo.get_vector(my_game.getMypackman() , algo.convert_pixel_to_gps(new Point3D(e.getX()-10,e.getY()+30,0.0) ,getHeight(), getWidth()));
+				System.out.println(mypackman_vector);
 			}
-	//		my_game.getFruit_list().add(new Fruit(fruit_id, point , fruit_weight ));
 			repaint();
 		}
 		/*
@@ -280,13 +285,15 @@ public class GUI_Map  extends JFrame
 			{
 				System.exit(0);
 			}
-			/*	if(e.getSource()==run) 
+			if(e.getSource()==run) 
 			{
 				if (thread!=null )
 					thread.stop();
 				repaint();
-				paths = algo.TSP(my_game ,accuracy_rate);
-				max_path_time = algo.get_max_path_time(paths);
+				time =100000.0;
+	//			play1.start(); // default max time is 100 seconds (1000*100 ms).
+				//			paths = algo.TSP(my_game ,accuracy_rate);
+				//			max_path_time = algo.get_max_path_time(paths);
 				run_program =true;
 				thread = new Thread() 
 				{
@@ -294,8 +301,9 @@ public class GUI_Map  extends JFrame
 					public void run() {thread_repainter();}
 				};
 				thread.start();
-			}
 
+			}
+			/*
 			if(e.getSource()==save) 
 			{
 				try {
@@ -320,7 +328,7 @@ public class GUI_Map  extends JFrame
 			}
 			if(e.getSource()==open) 
 			{
-	//			reset_params();
+				//			reset_params();
 				try 
 				{
 					JFrame parentFrame = new JFrame();
@@ -328,6 +336,8 @@ public class GUI_Map  extends JFrame
 					fileChooser.setDialogTitle("Specify a file to open");
 					if (fileChooser.showOpenDialog(parentFrame) == JFileChooser.APPROVE_OPTION) {
 						my_game = algo.get_data_from_csv_4(fileChooser.getSelectedFile().toString());
+	//					play1 = new Play(fileChooser.getSelectedFile().toString());
+	//					play1.setIDs(01110100, 01110010, 01111001);
 						repaint();
 					}
 				} catch (IOException e1)
@@ -420,19 +430,21 @@ public class GUI_Map  extends JFrame
 		 */
 		public void thread_repainter()  
 		{
-			/*		try
-		{
-			for (global_time=0;global_time*my_game.getSpeed_rate()<algo.get_max_path_time(paths);global_time++)
+			try
 			{
+				while(time>=0)
+				{		
+					
+					repaint();
+					Thread.sleep(1000);
+					my_game.getMypackman().setGps(algo.move_mypackman(my_game.getMypackman() , mypackman_vector));
+				}
 				repaint();
-				Thread.sleep(1000);
+			}catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			repaint();
-		}catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
-			 */
+
 		}
 		public Algorithms getAlgo() {
 			return algo;

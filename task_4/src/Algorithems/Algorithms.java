@@ -89,8 +89,21 @@ public class Algorithms
 		}
 		return create_game(my_string_list);
 	}
-
-
+	
+	public Point3D get_vector(MyPackman mypackman ,Point3D mouse)
+	{
+		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
+		Point3D meters_end = convert_gps_to_meters(mouse);
+		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
+		double t = (Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z()))/mypackman.getSpeed();
+		return new Point3D (vect.x() /t , vect.y()/t , vect.z()/t);
+	
+	}
+	public Point3D move_mypackman(MyPackman mypackman ,Point3D vect)
+	{
+		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());	
+		return convert_meters_to_gps(new Point3D(meters_start.x() + vect.x() , meters_start.y() + vect.y() , meters_start.z() + vect.z()));
+	}
 
 	/**
 	 * This function converts from a pixel point to a gps point
