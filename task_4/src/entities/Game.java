@@ -14,9 +14,15 @@ public class Game {
 	ArrayList<Packman> packman_list = new ArrayList<Packman>();
 	ArrayList<Box> box_list = new ArrayList<Box>();
 	ArrayList<Ghost> ghost_list = new ArrayList<Ghost>();
-
+	double speed_rate = 100;
+	public Game() {
+		super();
+	}
+	public Game(double speed_rate) {
+		super();
+		this.speed_rate = speed_rate;
+	}
 	
-	double speed_rate = 10;
 	/**
 	 * get friut_list
 	 * @return fruit_list

@@ -42,9 +42,9 @@ public class Algorithms
 		TOTAL_DISTANCE_ANGEL_LON = CORNER_LON - ORIGIN_LON;
 		TOTAL_DISTANCE_ANGEL_LAT = CORNER_LAT - ORIGIN_LAT;
 	}
-	public Game create_game(ArrayList<String> my_string_list)
+	public Game create_game(ArrayList<String> my_string_list , double speed)
 	{
-		Game temp_game = new Game();
+		Game temp_game = new Game(speed);
 		for (String entity : my_string_list)
 		{
 			String[] values = entity.split(",");
@@ -87,18 +87,23 @@ public class Algorithms
 			my_string_list.add(line);
 			line = br.readLine();
 		}
-		return create_game(my_string_list);
+		return create_game(my_string_list , 100);
 	}
 	
-	public Point3D get_vector(MyPackman mypackman ,Point3D mouse)
+	public Point3D get_vector(Point3D mypackman ,Point3D mouse)
 	{
-		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
+		Point3D meters_start = convert_gps_to_meters(mypackman);
 		Point3D meters_end = convert_gps_to_meters(mouse);
 		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
-		double t = (Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z()))/mypackman.getSpeed();
+		double t = (Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z()))/10;
 		return new Point3D (vect.x() /t , vect.y()/t , vect.z()/t);
-	
 	}
+	
+	/*public int does_hit_block(Point3D start , Point3D end)
+	{
+		Point3D vect = get_vector(start , end);
+	}
+	*/	
 	public double get_angle(MyPackman mypackman ,Point3D mouse)
 	{
 		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
@@ -116,6 +121,34 @@ public class Algorithms
 		return convert_meters_to_gps(new Point3D(meters_start.x() + vect.x() , meters_start.y() + vect.y() , meters_start.z() + vect.z()));
 	}
 
+	public Point3D get_start_location(Game game)
+	{
+		return game.getFruit_list().get(randomNum.nextInt(game.getFruit_list().size()-1)).getGps();
+	}
+	
+	public Point3D get_closesed_fruit(Game game)
+	{
+		double temp_distance;
+		int shortest_fruit_id = 0;
+		System.out.println("packman " + game.getMypackman().getGps());
+		System.out.println("fruit " +game.getFruit_list().get(0).getGps());
+		double min_value =cord.distance3d(game.getMypackman().getGps(), game.getFruit_list().get(0).getGps());
+		for (int j = 1; j<game.getFruit_list().size();j++)
+		{
+			temp_distance = cord.distance3d(game.getMypackman().getGps(), game.getFruit_list().get(j).getGps());
+			if(min_value>temp_distance && temp_distance>0.5)
+			{
+				min_value = temp_distance;
+				shortest_fruit_id = j;
+			}
+		}
+		return game.getFruit_list().get(shortest_fruit_id).getGps();
+	}
+	
+	
+	
+	
+	
 	/**
 	 * This function converts from a pixel point to a gps point
 	 * @param pixel current pixel point
@@ -174,6 +207,7 @@ public class Algorithms
 		return convert_meters_to_gps(new Point3D(meters_start.x()+vect.x()*t ,meters_start.y()+vect.y()*t , meters_start.z()+vect.z()*t));
 	}
 
+	
 	/**
 	 * This function gets data from a csv file and creates a Game with all its data 
 	 * @param path_of_csv location of the csv file
