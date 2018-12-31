@@ -50,17 +50,17 @@ public class Algorithms
 			String[] values = entity.split(",");
 			switch(values[0])
 			{
-				case "M": temp_game.setMypackman(new MyPackman(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
-				break;
-				case "P": temp_game.getPackman_list().add(new Packman(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
-				break;
-				case "G": temp_game.getGhost_list().add(new Ghost(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
-				break;
-				case "F": temp_game.getFruit_list().add(new Fruit(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) ) );
-				break;
-				case "B": temp_game.getBox_list().add(new Box(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])),new Point3D(Double.parseDouble(values[5]) ,Double.parseDouble(values[6]) , Double.parseDouble(values[7])) , Double.parseDouble(values[8])) );
-				break;
-				default : continue;
+			case "M": temp_game.setMypackman(new MyPackman(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
+			break;
+			case "P": temp_game.getPackman_list().add(new Packman(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
+			break;
+			case "G": temp_game.getGhost_list().add(new Ghost(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) , Double.parseDouble(values[6]) ) );
+			break;
+			case "F": temp_game.getFruit_list().add(new Fruit(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])), Double.parseDouble(values[5]) ) );
+			break;
+			case "B": temp_game.getBox_list().add(new Box(Integer.parseInt(values[1]) , new Point3D(Double.parseDouble(values[2]) ,Double.parseDouble(values[3]) , Double.parseDouble(values[4])),new Point3D(Double.parseDouble(values[5]) ,Double.parseDouble(values[6]) , Double.parseDouble(values[7])) , Double.parseDouble(values[8])) );
+			break;
+			default : continue;
 			}
 		}
 		return temp_game;
@@ -89,7 +89,7 @@ public class Algorithms
 		}
 		return create_game(my_string_list , 100);
 	}
-	
+
 	public Point3D get_vector(Point3D mypackman ,Point3D mouse)
 	{
 		Point3D meters_start = convert_gps_to_meters(mypackman);
@@ -98,12 +98,77 @@ public class Algorithms
 		double t = (Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z()))/10;
 		return new Point3D (vect.x() /t , vect.y()/t , vect.z()/t);
 	}
-	
-	/*public int does_hit_block(Point3D start , Point3D end)
+
+	public boolean does_hit_top_block(Point3D start , Point3D end , Box box)
 	{
-		Point3D vect = get_vector(start , end);
+		Point3D meters_start = convert_gps_to_meters(start);
+		Point3D meters_end = convert_gps_to_meters(end);
+		Point3D left_bottom = convert_gps_to_meters(box.getGps1());
+		Point3D right_top = convert_gps_to_meters(box.getGps2());
+		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
+		Point3D temp_point;
+		double dist = Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z());
+		for (int i=0;i<dist;i+=3)
+		{
+			temp_point = new Point3D(start.x() +vect.x()/dist*i ,start.y() +vect.y()/dist*i ,start.z() +vect.z()/dist*i);
+			if (temp_point.x()>left_bottom.x()-3 && temp_point.x()<right_top.x()+3 && temp_point.y()<right_top.y()+3 && temp_point.y()>right_top.y()-3)
+				return true;
+		}
+		return false;
 	}
-	*/	
+	public boolean does_hit__bottom_block(Point3D start , Point3D end , Box box)
+	{
+		Point3D meters_start = convert_gps_to_meters(start);
+		Point3D meters_end = convert_gps_to_meters(end);
+		Point3D left_bottom = convert_gps_to_meters(box.getGps1());
+		Point3D right_top = convert_gps_to_meters(box.getGps2());
+		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
+		Point3D temp_point;
+		double dist = Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z());
+		for (int i=0;i<dist;i+=3)
+		{
+			temp_point = new Point3D(start.x() +vect.x()/dist*i ,start.y() +vect.y()/dist*i ,start.z() +vect.z()/dist*i);
+			if (temp_point.x()>left_bottom.x()-3 && temp_point.x()<right_top.x()+3 && temp_point.y()<left_bottom.y()+3 && temp_point.y()>left_bottom.y()-3)
+				return true;
+		}
+		return false;
+	}
+	public boolean does_hit_left_block(Point3D start , Point3D end , Box box)
+	{
+		Point3D meters_start = convert_gps_to_meters(start);
+		Point3D meters_end = convert_gps_to_meters(end);
+		Point3D left_bottom = convert_gps_to_meters(box.getGps1());
+		Point3D right_top = convert_gps_to_meters(box.getGps2());
+		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
+		Point3D temp_point;
+		double dist = Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z());
+		for (int i=0;i<dist;i+=3)
+		{
+			temp_point = new Point3D(start.x() +vect.x()/dist*i ,start.y() +vect.y()/dist*i ,start.z() +vect.z()/dist*i);
+
+			if (temp_point.x()>left_bottom.x()-3 && temp_point.x()<left_bottom.x()+3 && temp_point.y()<left_bottom.y()+3 && temp_point.y()>right_top.y()-3)
+				return true;
+		}
+		return false;
+	}
+	public boolean does_hit_right_block(Point3D start , Point3D end , Box box)
+	{
+		Point3D meters_start = convert_gps_to_meters(start);
+		Point3D meters_end = convert_gps_to_meters(end);
+		Point3D left_bottom = convert_gps_to_meters(box.getGps1());
+		Point3D right_top = convert_gps_to_meters(box.getGps2());
+		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
+		Point3D temp_point;
+		double dist = Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z());
+		for (int i=0;i<dist;i+=3)
+		{
+			temp_point = new Point3D(start.x() +vect.x()/dist*i ,start.y() +vect.y()/dist*i ,start.z() +vect.z()/dist*i);
+
+			if (temp_point.x()>right_top.x()-3 && temp_point.x()<right_top.x()+3 && temp_point.y()<left_bottom.y()+3 && temp_point.y()>right_top.y()-3)
+				return true;
+		}
+		return false;
+	}
 	public double get_angle(MyPackman mypackman ,Point3D mouse)
 	{
 		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
@@ -113,7 +178,7 @@ public class Algorithms
 			return 90 + Math.toDegrees(Math.atan(vect.y()/vect.x()));
 		else 
 			return 270 + Math.toDegrees(Math.atan(vect.y()/vect.x()));
-	
+
 	}
 	public Point3D move_mypackman(MyPackman mypackman ,Point3D vect)
 	{
@@ -125,13 +190,11 @@ public class Algorithms
 	{
 		return game.getFruit_list().get(randomNum.nextInt(game.getFruit_list().size()-1)).getGps();
 	}
-	
+
 	public Point3D get_closesed_fruit(Game game)
 	{
 		double temp_distance;
 		int shortest_fruit_id = 0;
-		System.out.println("packman " + game.getMypackman().getGps());
-		System.out.println("fruit " +game.getFruit_list().get(0).getGps());
 		double min_value =cord.distance3d(game.getMypackman().getGps(), game.getFruit_list().get(0).getGps());
 		for (int j = 1; j<game.getFruit_list().size();j++)
 		{
@@ -142,13 +205,99 @@ public class Algorithms
 				shortest_fruit_id = j;
 			}
 		}
+		for (Box box : game.getBox_list())
+		{
+/*			Point3D left_bottom = convert_gps_to_meters(box.getGps1());
+			Point3D right_top = convert_gps_to_meters(box.getGps2());
+			Point3D me = convert_gps_to_meters(game.getMypackman().getGps());
+
+			boolean top = does_hit_top_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box);
+			boolean bottom = does_hit__bottom_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box);
+			boolean left = does_hit_left_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box);
+			boolean right = does_hit_right_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box);
+			//		System.out.println(top + "  " + bottom + " " + left + " " + right);
+			if (bottom && left)
+			{
+				return convert_meters_to_gps(new Point3D(left_bottom.x()-5 , left_bottom.y()+5 ,left_bottom.z()));
+			}
+			else if (bottom && right)
+			{
+				return convert_meters_to_gps(new Point3D(left_bottom.x()+5 , left_bottom.y()+5 ,left_bottom.z()));
+			}
+			else if (left && top)
+			{
+				return convert_meters_to_gps(new Point3D(left_bottom.x()-5 , left_bottom.y()-5 ,left_bottom.z()));
+			}
+			else if (right && top)
+			{
+				return convert_meters_to_gps(new Point3D(left_bottom.x()+5 , left_bottom.y()-5 ,left_bottom.z()));
+			}
+			else if(right && left)
+			{
+				if ((left_bottom.y()+right_top.y())/2>me.y())
+				{
+					return convert_meters_to_gps(new Point3D (me.x() , me.y()-10 , me.z()));
+				}
+				else 
+				{
+					return convert_meters_to_gps(new Point3D (me.x() , me.y()+10 , me.z()));
+				}
+			}
+			else if (top && bottom)
+			{
+				if ((left_bottom.x() + right_top.x())/2 > me.x())
+				{
+					return convert_meters_to_gps(new Point3D (me.x()-10 , me.y() , me.z()));
+				}
+				else
+				{
+					return convert_meters_to_gps(new Point3D (me.x()+10 , me.y() , me.z()));
+				}
+			}
+
+
+*/
+			/*		
+			if (me.x()<left_bottom.x() && me.y()>left_bottom.y() && me.x()>left_bottom.x()-5 && me.y()<left_bottom.y()+5) // left bottom corner
+			{
+				return convert_meters_to_gps(new Point3D(left_bottom.x() , right_top.y() , 0));
+			}
+			if (me.y()<left_bottom.y()+1 && me.y()>right_top.y()-1 && me.x()>right_top.x()-1 && me.x()<right_top.x()+3) // box on left
+			{
+				if ((left_bottom.y()+right_top.y())/2>me.y())
+					return convert_meters_to_gps(new Point3D(right_top.x() , right_top.y() , 0));
+				else 
+					return convert_meters_to_gps(new Point3D(right_top.x() , left_bottom.y() , 0));
+			}
+			else if (me.y()<left_bottom.y()+1 && me.y()>right_top.y()-1 && me.x()>left_bottom.x()-3 && me.x()<left_bottom.x()+1) // box on right
+			{
+				if ((left_bottom.y()+right_top.y())/2>me.y())
+					return convert_meters_to_gps(new Point3D(left_bottom.x() , right_top.y() , 0));
+				else 
+					return convert_meters_to_gps(new Point3D(left_bottom.x() , left_bottom.y() , 0));
+			}	
+			else if (me.x()<right_top.x()+1 && me.x()>left_bottom.x()-1 && me.y()>left_bottom.y()-1 && me.y()<left_bottom.y()+3) // box on top
+			{
+				if ((left_bottom.x() + right_top.x())/2 > me.x())
+					return convert_meters_to_gps(new Point3D(left_bottom.x() , left_bottom.y() , 0));
+				else 
+					return convert_meters_to_gps(new Point3D(right_top.x() , left_bottom.y() , 0));
+			}
+			else if (me.x()<right_top.x()+1 && me.x()>left_bottom.y()-1 && me.y()<right_top.y()-3 && me.y()>right_top.x()+1) // box on bottom
+			{
+				if ((left_bottom.x() + right_top.x())/2 > me.x())
+					return convert_meters_to_gps(new Point3D(left_bottom.x() , right_top.y() , 0));
+				else 
+					return convert_meters_to_gps(new Point3D(right_top.x() , right_top.y() , 0));
+			}	*/
+		}
 		return game.getFruit_list().get(shortest_fruit_id).getGps();
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**
 	 * This function converts from a pixel point to a gps point
 	 * @param pixel current pixel point
@@ -207,7 +356,7 @@ public class Algorithms
 		return convert_meters_to_gps(new Point3D(meters_start.x()+vect.x()*t ,meters_start.y()+vect.y()*t , meters_start.z()+vect.z()*t));
 	}
 
-	
+
 	/**
 	 * This function gets data from a csv file and creates a Game with all its data 
 	 * @param path_of_csv location of the csv file
