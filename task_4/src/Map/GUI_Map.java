@@ -166,7 +166,7 @@ public class GUI_Map  extends JFrame
 
 		for(Box box :my_game.getBox_list())
 		{
-			g.drawImage(box.getBox_image(),(int) (algo.convert_gps_to_pixel(box.getGps2(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(box.getGps2(), getHeight(), getWidth()).y())-5, (int) (getWidth()*algo.get_box_X_percentage(box.getGps1(), box.getGps2())), (int) (getHeight()*algo.get_box_Y_percentage(box.getGps1(), box.getGps2())), null);
+			g.drawImage(box.getBox_image(),(int) (algo.convert_gps_to_pixel(box.getGps2(), getHeight(), getWidth()).x()), (int)(algo.convert_gps_to_pixel(box.getGps2(), getHeight(), getWidth()).y()), (int) (getWidth()*algo.get_box_X_percentage(box.getGps1(), box.getGps2())), (int) (getHeight()*algo.get_box_Y_percentage(box.getGps1(), box.getGps2())), null);
 		}
 		for (Fruit fruit : my_game.getFruit_list())
 		{
@@ -241,6 +241,7 @@ public class GUI_Map  extends JFrame
 			{
 				mypackman_angle =algo.get_angle(my_game.getMypackman(),  algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0) ,getHeight(), getWidth()));
 			}
+//			System.out.println(algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0), getHeight(), getWidth()));
 		}
 		/*
 		{
