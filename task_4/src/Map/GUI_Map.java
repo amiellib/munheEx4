@@ -293,7 +293,7 @@ public class GUI_Map  extends JFrame
 				if (my_game.getMypackman()==null)
 					my_game.setMypackman(new MyPackman(0, algo.get_start_location(my_game) , 20 , 1));
 				automate=true;
-				play1.setInitLocation(my_game.getMypackman().getGps().x(),my_game.getMypackman().getGps().y());
+				play1.setInitLocation(my_game.getMypackman().getGps().x()+0.00001,my_game.getMypackman().getGps().y()+0.00001);
 				repaint();
 			}
 			if(e.getSource()==clean_map) 
@@ -471,6 +471,8 @@ public class GUI_Map  extends JFrame
 				repaint();
 				System.out.println(play1.getStatistics());
 				play1.stop();
+				loaded = false;
+				// end game clear
 			}catch (InterruptedException e) {
 				e.printStackTrace();
 			}
