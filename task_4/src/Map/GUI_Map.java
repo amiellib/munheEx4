@@ -466,7 +466,7 @@ public class GUI_Map  extends JFrame
 					
 					repaint();
 					Thread.sleep((int)(100000/my_game.getSpeed_rate()));
-		//			time-=(int)my_game.getSpeed_rate();
+					time-=(int)my_game.getSpeed_rate();
 				}
 				repaint();
 				System.out.println(play1.getStatistics());
