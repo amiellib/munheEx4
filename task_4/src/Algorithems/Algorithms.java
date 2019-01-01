@@ -26,7 +26,6 @@ public class Algorithms
 	private Random randomNum = new Random();
 	private double accuracy = 1.0;
 	private double step_value = 1.5 , distance_from_corner =2.0;
-	Point3D go_to;
 	/**
 	 * This constructor initializes all the fundamental data
 	 * @param map the map that we are doing all the algorithms
@@ -242,70 +241,23 @@ public class Algorithms
 			else if (bottom && left)
 			{
 				System.out.println("left bottom");
-				go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-				for (Box box2 : game.getBox_list())
-				{
-					if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-					}
-					else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-					}
-				}
-				return go_to;
+				return convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
 			}
 			else if (bottom && right)
 			{
 				System.out.println("bottom right");
-				go_to = convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
-				for (Box box2 : game.getBox_list())
-				{
-					if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-					}
-					else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-					}
-				}
-				return go_to;
+				return convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
 			}
 			else if (left && top )
 			{
 				System.out.println("left top");
-				go_to = convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
-				for (Box box2 : game.getBox_list())
-				{
-					if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-					}
-					else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-					}
-				}
-				return go_to;
+
+				return convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
 			}
 			else if (right && top )
 			{
 				System.out.println("right top");
-				go_to =  convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
-				for (Box box2 : game.getBox_list())
-				{
-					if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-					}
-					else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-					{
-						go_to = new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-					}
-				}
-				return go_to;
+				return convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
 			}
 			else if(right && left)
 			{
@@ -314,37 +266,11 @@ public class Algorithms
 					System.out.println("left right go down");
 					if (me.x()>right_top.x())
 					{
-						go_to = convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-//						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
 					}
 					else
 					{
-						go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-//						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));			
+						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));			
 					}
 				}
 				else // go up
@@ -352,37 +278,11 @@ public class Algorithms
 					System.out.println("left right go up");
 					if (me.x()>right_top.x())
 					{
-						go_to =  convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-				//		return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));
+						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));
 					}
 					else
 					{
-						go_to = convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-		//				return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
+						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
 					}				}
 			}
 			else if (top && bottom)
@@ -390,39 +290,13 @@ public class Algorithms
 				if ((left_bottom.x() + right_top.x())/2 > me.x()) // go left
 				{
 					System.out.println("top bottom left");
-					if (me.y()>right_top.y()) //
+					if (me.y()>right_top.y())
 					{
-						go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-//						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
 					}
 					else
 					{
-						go_to = convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-	//					return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
+						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
 					}
 				}
 				else // go right
@@ -430,37 +304,11 @@ public class Algorithms
 					System.out.println("top bottom right");
 					if (me.y()>right_top.y())
 					{
-						go_to = convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-//						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
 					}
 					else
 					{
-						go_to =  convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
-						for (Box box2 : game.getBox_list())
-						{
-							if (does_hit_left_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z());
-							}
-							else if (does_hit_top_block(game.getMypackman().getGps() ,go_to , box2))
-							{
-								go_to = new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z());
-							}
-						}
-						return go_to;
-				//		return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
+						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
 					}				
 				}
 			}
