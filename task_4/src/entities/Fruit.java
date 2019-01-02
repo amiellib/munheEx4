@@ -20,7 +20,7 @@ public class Fruit
 	private Point3D Gps;
 	private double weight;
 	private Image fruit_image;
-	private String[] fruits = {"src/resources/fruit.png" , "src/resources/fruit2.png" ,"src/resources/fruit3.png" ,"src/resources/fruit4.png" ,"src/resources/fruit5.png"};
+	private String fruits = "src/resources/fruit.png";
 	Random randomNum = new Random();
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class Fruit
 		this.Gps=new Point3D(gps);
 		this.weight = weight;
 		try {
-			fruit_image = ImageIO.read(new File(fruits[randomNum.nextInt(fruits.length-1)]));
+			fruit_image = ImageIO.read(new File(fruits));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
