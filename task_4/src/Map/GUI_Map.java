@@ -26,20 +26,23 @@ public class GUI_Map  extends JFrame
 	private BufferedImage backgroundImage;
 	private Algorithms algo; 
 	private JMenuBar menuBarstatic;
-	private JMenu fileMenu , game_menu ,speed , accuracy , csv , auto;
+	private JMenu fileMenu , game_menu ,speed  , csv , auto ;
 	private JMenuItem clean_map , slowdown ,automated, fast_forwards , exit , run , new_file , open, accuracy_level,my_packman;
 	private Thread thread;
 	static private Play play1 ;
 	private double time =100000.0 , mypackman_angle =0.0;
 	ArrayList<String> board_data ;
+	JTextField info;
+	private String data = "";
 	public GUI_Map(Map map) throws IOException 
 	{
 		super("PackMan Map");
 		this.algo = new Algorithms(map);
 		backgroundImage = map.getBackgroundImage();
 		menuBarstatic = new JMenuBar(); 
+		info = new JTextField(data);
+		info.setEditable(false);
 		auto = new JMenu("Auto");
-		accuracy= new JMenu("Accuracy");
 		fileMenu = new JMenu("File");
 		game_menu = new JMenu("game"); 
 		speed = new JMenu("Speed"); 
@@ -49,7 +52,7 @@ public class GUI_Map  extends JFrame
 		menuBarstatic.add(speed); 
 		menuBarstatic.add(csv);
 		menuBarstatic.add(auto);
-		
+		menuBarstatic.add(info);
 		slowdown = new JMenuItem("slow down");
 		slowdown.setAccelerator(KeyStroke.getKeyStroke('D', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		fast_forwards = new JMenuItem("fast forwards");
@@ -66,7 +69,6 @@ public class GUI_Map  extends JFrame
 		accuracy_level = new JMenuItem("accuracy_level");
 		accuracy_level.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 
-		accuracy.add(accuracy_level);
 
 		speed.add(slowdown);
 		speed.addSeparator();
@@ -134,6 +136,7 @@ public class GUI_Map  extends JFrame
 		if (my_game.getMypackman()!=null)
 			g.drawImage(my_game.getMypackman().getPackman_image(),(int) (algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).y())-5,10, 10, null);
 
+		info.setText(data);
 		menuBarstatic.repaint();
 	}
 
@@ -264,6 +267,7 @@ public class GUI_Map  extends JFrame
 					repaint();
 					Thread.sleep((int)(100000/my_game.getSpeed_rate()));
 					time-=100;
+					data = play1.getStatistics();
 				}
 				repaint();
 				System.out.println(play1.getStatistics());
