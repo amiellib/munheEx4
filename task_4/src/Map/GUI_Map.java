@@ -147,6 +147,7 @@ public class GUI_Map  extends JFrame
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
+			System.out.println(algo.convert_gps_to_meters(algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0), getHeight(), getWidth()) ));
 			if (my_game.getMypackman()==null)
 			{
 				my_game.setMypackman(new MyPackman(0, algo.convert_pixel_to_gps(new Point3D(e.getX(),e.getY()+40,0.0), getHeight(), getWidth()) , 20 , 1));
