@@ -20,7 +20,7 @@ public class Algorithms
 	private MyCoords cord=new MyCoords(); // to be able to do points algorithms
 	private double ORIGIN_LON , ORIGIN_LAT , CORNER_LON , CORNER_LAT , TOTAL_DISTANCE_X ,TOTAL_DISTANCE_Y ,TOTAL_DISTANCE_ANGEL_LON ,TOTAL_DISTANCE_ANGEL_LAT;
 	private Random randomNum = new Random();
-	private double step_value = 1.5 , distance_from_corner =2.0;
+	private double step_value = 1.5 , distance_from_corner =5.0;
 	/**
 	 * This constructor initializes all the fundamental data
 	 * @param map the map that we are doing all the algorithms
@@ -100,6 +100,46 @@ public class Algorithms
 		Point3D meters_end = convert_gps_to_meters(end);
 		Point3D left_bottom = convert_gps_to_meters(box.getGps1());
 		Point3D right_top = convert_gps_to_meters(box.getGps2());
+		Vector vector = new Vector(meters_start , meters_end);
+		double x_value , y_value;
+		switch (direction)
+		{
+			case "top" : 
+				x_value = vector.give_y_get_x(right_top.y());
+				if (x_value>left_bottom.x()-step_value && x_value<right_top.x()+step_value && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
+				{
+					return true;
+				}
+				break;
+			case "bottom" :
+				x_value = vector.give_y_get_x(left_bottom.y());
+				if (x_value>left_bottom.x()-step_value && x_value<right_top.x()+step_value && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
+				{
+					return true;
+				}
+				break;
+			case "left" :
+				y_value = vector.give_x_get_y(left_bottom.x());
+				if (y_value<left_bottom.y()+step_value && y_value>right_top.y()-step_value && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
+				{
+					return true;
+				}
+				break;
+			case "right" :
+				y_value = vector.give_x_get_y(right_top.x());
+				if (y_value<left_bottom.y()+step_value && y_value>right_top.y()-step_value && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
+				{
+					return true;
+				}
+				break;
+			default : ;
+			
+		}
+		return false;
+	}
+	
+	
+	/*
 		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
 		Point3D temp_point;
 		double dist = Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z());
@@ -129,7 +169,7 @@ public class Algorithms
 			}
 		}
 		return false;
-	}
+	}*/
 	public double get_angle(MyPackman mypackman ,Point3D mouse)
 	{
 		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
@@ -178,6 +218,7 @@ public class Algorithms
 			boolean bottom = does_hit_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box , "bottom");
 			boolean left = does_hit_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box , "left");
 			boolean right = does_hit_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box , "right");
+	//		System.out.println("top - " + top + " , bottom - " + bottom + " , left - " + left + " , right - " + right);
 			if (top && bottom && right)
 			{
 				System.out.println("right corner 1");
@@ -264,7 +305,7 @@ public class Algorithms
 			{
 				if ((left_bottom.x() + right_top.x())/2 > me.x()) // go left
 				{
-					System.out.println("top bottom left");
+					System.out.println("top bottom go left");
 					if (me.y()>right_top.y())
 					{
 						to_return = convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
@@ -278,7 +319,7 @@ public class Algorithms
 				}
 				else // go right
 				{
-					System.out.println("top bottom right");
+					System.out.println("top bottom go right");
 					if (me.y()>right_top.y())
 					{
 						to_return = convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
