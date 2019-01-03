@@ -154,6 +154,8 @@ public class Algorithms
 
 	public Point3D get_closesed_fruit(Game game)
 	{
+		Point3D me = convert_gps_to_meters(game.getMypackman().getGps());
+	
 		double temp_distance;
 		int shortest_fruit_id = 0;
 		double min_value =cord.distance3d(game.getMypackman().getGps(), game.getFruit_list().get(0).getGps());
@@ -166,45 +168,12 @@ public class Algorithms
 				shortest_fruit_id = j;
 			}
 		}
-		
+		Point3D to_return = game.getFruit_list().get(shortest_fruit_id).getGps();
 		for (Box box : game.getBox_list())
 		{
 			Point3D left_bottom = convert_gps_to_meters(box.getGps1());
 			Point3D right_top = convert_gps_to_meters(box.getGps2());
-			Point3D me = convert_gps_to_meters(game.getMypackman().getGps());
-/*
-			if ((me.x()>left_bottom.x()-1 && me.x()<left_bottom.x() && me.y()<left_bottom.y() && me.y()>right_top.y()) || 
-				(me.x()>right_top.x() && me.x()<right_top.x()+1 && me.y()<left_bottom.y() && me.y()>right_top.y()) || 
-				(me.y()>right_top.y()-1 && me.y()<right_top.y() && me.x()>left_bottom.x() && me.x()<right_top.x()) ||  
-				(me.y()>left_bottom.y() && me.y()<left_bottom.y()+1 && me.x()>left_bottom.x() && me.x()<right_top.x()))
-			{
-				System.out.println("yup box");
-				if (me.y()<173 && me.y()>168)
-				{
-					return convert_meters_to_gps(new Point3D(me.x()+10 ,me.y() ,me.z()));
-				}
-				else if (me.x()<866 && me.x()>860)
-				{
-					return convert_meters_to_gps(new Point3D(me.x() ,me.y()+10 ,me.z()));
-				}
-				else if (me.y()<234 && me.y()>228)
-				{
-					return convert_meters_to_gps(new Point3D(me.x()+10 ,me.y() ,me.z()));
-				}
-				else if(me.x()<247 && me.x()>240)
-				{
-					return convert_meters_to_gps(new Point3D(me.x() ,me.y()+10 ,me.z()));
-				}
-				else if(me.y()<95 && me.y()>88)
-				{
-					return convert_meters_to_gps(new Point3D(me.x()+10 ,me.y() ,me.z()));
-				}
-				else if (me.x()<89 && me.x()>85)
-				{
-					return convert_meters_to_gps(new Point3D(me.x() ,me.y()-10 ,me.z()));
-				}
-			}
-*/
+
 			boolean top = does_hit_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box , "top");
 			boolean bottom = does_hit_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box , "bottom");
 			boolean left = does_hit_block (game.getMypackman().getGps() ,game.getFruit_list().get(shortest_fruit_id).getGps() , box , "left");
@@ -212,45 +181,53 @@ public class Algorithms
 			if (top && bottom && right)
 			{
 				System.out.println("right corner 1");
-				return convert_meters_to_gps(new Point3D(me.x()+10 ,(left_bottom.y()+right_top.y())/2 ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D(me.x()+10 ,(left_bottom.y()+right_top.y())/2 ,left_bottom.z()));
+				break;
 			}
 			else if (top && bottom && left)
 			{
 				System.out.println("right corner 2");
-				return convert_meters_to_gps(new Point3D(me.x()-10 , (left_bottom.y()+right_top.y())/2 ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D(me.x()-10 , (left_bottom.y()+right_top.y())/2 ,left_bottom.z()));
+				break;
 			}
 			else if (left && right && bottom )
 			{
 				System.out.println("bottom corner 1");
 
-				return convert_meters_to_gps(new Point3D((left_bottom.x()+right_top.x())/2 , me.y()+10 ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D((left_bottom.x()+right_top.x())/2 , me.y()+10 ,left_bottom.z()));
+				break;
 			}
 			else if (left && right && top )
 			{
 				System.out.println("bottom corner 2");
 
-				return convert_meters_to_gps(new Point3D((left_bottom.x()+right_top.x())/2 , me.y()-10 ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D((left_bottom.x()+right_top.x())/2 , me.y()-10 ,left_bottom.z()));
+				break;
 			}
 			else if (bottom && left)
 			{
 				System.out.println("left bottom");
-				return convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
+				break;
 			}
 			else if (bottom && right)
 			{
 				System.out.println("bottom right");
-				return convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner ,left_bottom.z()));
+				break;
 			}
 			else if (left && top )
 			{
 				System.out.println("left top");
 
-				return convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D(left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
+				break;
 			}
 			else if (right && top )
 			{
 				System.out.println("right top");
-				return convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
+				to_return = convert_meters_to_gps(new Point3D(right_top.x()+distance_from_corner , right_top.y()-distance_from_corner ,left_bottom.z()));
+				break;
 			}
 			else if(right && left)
 			{
@@ -259,11 +236,13 @@ public class Algorithms
 					System.out.println("left right go down");
 					if (me.x()>right_top.x())
 					{
-						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						to_return = convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						break;
 					}
 					else
 					{
-						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));			
+						to_return = convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						break;
 					}
 				}
 				else // go up
@@ -271,12 +250,15 @@ public class Algorithms
 					System.out.println("left right go up");
 					if (me.x()>right_top.x())
 					{
-						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));
+						to_return = convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));
+						break;
 					}
 					else
 					{
-						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
-					}				}
+						to_return = convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));
+						break;
+					}		
+				}
 			}
 			else if (top && bottom)
 			{
@@ -285,11 +267,13 @@ public class Algorithms
 					System.out.println("top bottom left");
 					if (me.y()>right_top.y())
 					{
-						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						to_return = convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						break;
 					}
 					else
 					{
-						return convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
+						to_return = convert_meters_to_gps(new Point3D (left_bottom.x()-distance_from_corner , right_top.y()-distance_from_corner , me.z()));
+						break;
 					}
 				}
 				else // go right
@@ -297,16 +281,18 @@ public class Algorithms
 					System.out.println("top bottom right");
 					if (me.y()>right_top.y())
 					{
-						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						to_return = convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , left_bottom.y()+distance_from_corner , me.z()));
+						break;
 					}
 					else
 					{
-						return convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));			
+						to_return = convert_meters_to_gps(new Point3D (right_top.x()+distance_from_corner , right_top.y()-distance_from_corner , me.z()));
+						break;
 					}				
 				}
 			}
 		}
-		return game.getFruit_list().get(shortest_fruit_id).getGps();
+		return to_return;
 	}
 
 
