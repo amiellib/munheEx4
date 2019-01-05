@@ -113,7 +113,6 @@ public class GUI_Map  extends JFrame
 			play1.rotate(mypackman_angle);
 			my_game = algo.create_game(play1.getBoard() ,my_game.getSpeed_rate());
 		}
-
 		
 		g.drawImage(backgroundImage.getScaledInstance(this.getWidth(),this.getHeight(),backgroundImage.SCALE_SMOOTH), 0, 0, null);
 
@@ -186,9 +185,11 @@ public class GUI_Map  extends JFrame
 			if(e.getSource()==automated) 
 			{
 				if (my_game.getMypackman()==null)
+				{
 					my_game.setMypackman(new MyPackman(0, algo.get_start_location(my_game) , 20 , 1));
+					play1.setInitLocation(my_game.getMypackman().getGps().x()+0.00001,my_game.getMypackman().getGps().y()+0.00001);
+				}
 				automate=true;
-				play1.setInitLocation(my_game.getMypackman().getGps().x()+0.00001,my_game.getMypackman().getGps().y()+0.00001);
 				repaint();
 			}
 			if(e.getSource()==clean_map) 
