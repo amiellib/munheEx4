@@ -1,9 +1,14 @@
 package Algorithems;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import Coords.MyCoords;
@@ -17,6 +22,9 @@ import entities.*;
  */
 public class Algorithms 
 {
+	private static ArrayList<Edge> box_edges;
+	private static List<Vertex> box_nodes;
+
 	private MyCoords cord=new MyCoords(); // to be able to do points algorithms
 	private double ORIGIN_LON , ORIGIN_LAT , CORNER_LON , CORNER_LAT , TOTAL_DISTANCE_X ,TOTAL_DISTANCE_Y ,TOTAL_DISTANCE_ANGEL_LON ,TOTAL_DISTANCE_ANGEL_LAT;
 	private Random randomNum = new Random();
@@ -137,6 +145,10 @@ public class Algorithms
 		}
 		return false;
 	}
+	public boolean does_hit_any_block_boolean(Point3D start , Point3D end ,Game game)
+	{
+		return (does_hit_any_block(start , end , game)>0) ?true : false; 
+	}
 	public int does_hit_any_block(Point3D start , Point3D end ,Game game)
 	{
 		Point3D meters_start = convert_gps_to_meters(start);
@@ -145,30 +157,34 @@ public class Algorithms
 		{
 			Point3D left_bottom = convert_gps_to_meters(box.getGps1());
 			Point3D right_top = convert_gps_to_meters(box.getGps2());
+			if ((meters_start.x() + meters_end.x())/2 > left_bottom.x() && (meters_start.x() + meters_end.x())/2 < right_top.x() && (meters_start.y() + meters_end.y())/2 < left_bottom.y() && (meters_start.y() + meters_end.y())/2 > right_top.y()) // in box
+			{
+				return 5;
+			}
 			Vector vector = new Vector(meters_start , meters_end);
 			double x_value , y_value;
 			x_value = vector.give_y_get_x(right_top.y());
 			if (x_value>left_bottom.x() && x_value<right_top.x() && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
 			{
-				System.out.println("1");
+	//			System.out.println("1");
 				return 1;
 			}
 			x_value = vector.give_y_get_x(left_bottom.y());
 			if (x_value>left_bottom.x() && x_value<right_top.x() && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
 			{
-				System.out.println("2");
+	//			System.out.println("2");
 				return 2;
 			}
 			y_value = vector.give_x_get_y(left_bottom.x());
 			if (y_value<left_bottom.y() && y_value>right_top.y() && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
 			{
-				System.out.println("3");
+	//			System.out.println("3");
 				return 3;
 			}
 			y_value = vector.give_x_get_y(right_top.x());
 			if (y_value<left_bottom.y() && y_value>right_top.y() && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
 			{
-				System.out.println("4");
+	//			System.out.println("4");
 				return 4;
 			}
 		}			
@@ -215,7 +231,7 @@ public class Algorithms
 			}
 		}
 		Point3D to_return = game.getFruit_list().get(shortest_fruit_id).getGps();
-		for (Box box : game.getBox_list())
+/*		for (Box box : game.getBox_list())
 		{
 			Point3D left_bottom = convert_gps_to_meters(box.getGps1());
 			Point3D right_top = convert_gps_to_meters(box.getGps2());
@@ -347,8 +363,8 @@ public class Algorithms
 			{
 				to_return = convert_meters_to_gps(new Point3D (338 , 175 ,0));
 			}
-			
-		}
+
+		}*/
 		return to_return;
 	}
 
@@ -423,4 +439,109 @@ public class Algorithms
 		}
 		return matrixmin;
 	}
+
+	public ArrayList<Point3D> get_all_cornors(Game game)
+	{
+		ArrayList<Point3D> cornors = new ArrayList<Point3D>();
+		for (Box box : game.getBox_list())
+		{
+			cornors.add(new Point3D(box.getGps1()));
+			cornors.add(new Point3D(box.getGps2()));
+			cornors.add(new Point3D(box.getGps1().x() , box.getGps2().y()));
+			cornors.add(new Point3D(box.getGps2().x() , box.getGps1().y()));
+		}
+		return cornors;
+	}
+
+	public void create_box_edges(Game game)
+	{
+		box_nodes = new ArrayList<Vertex>();
+		box_edges = new ArrayList<Edge>();
+		ArrayList<Point3D> cornors = get_all_cornors(game);
+		for (int i = 0; i < cornors.size(); i++) {
+            Vertex location = new Vertex(Integer.toString(i), Integer.toString(i));
+            box_nodes.add(location);
+        }
+		int counter=0;
+		for(int i=0;i<cornors.size()-1;i++)
+		{
+			for(int j=i+1;j<cornors.size();j++)
+			{
+				if (!does_hit_any_block_boolean(cornors.get(i) , cornors.get(j) , game))
+				{
+					System.out.println("edge " + box_nodes.get(i) + " " + box_nodes.get(j) + " " +  convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) );
+			//		addLane("Edge_" + i, 0, 1, 85);
+			//		new Edge(laneId,nodes.get(sourceLocNo), nodes.get(destLocNo), duration );
+					box_edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , box_nodes.get(j) , convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) ) );
+					counter++;
+				}
+			}		
+		}
+
+	}
+
+
+	public Point3D get_next_point(Game game)
+	{
+		int counter=box_edges.size();
+		ArrayList<Point3D> cornors = get_all_cornors(game);
+		List<Vertex> nodes = new ArrayList<Vertex>();
+		nodes.addAll(box_nodes);
+		int node_size = nodes.size();
+		nodes.add(new Vertex(Integer.toString(node_size) , Integer.toString(node_size)));
+		nodes.add(new Vertex(Integer.toString(node_size+1) , Integer.toString(node_size+1)));
+		List<Edge> edges = new ArrayList<Edge>();
+		edges.addAll(box_edges);
+
+		Point3D packman_meters =convert_gps_to_meters(game.getMypackman().getGps());
+		Point3D fruit_meters =convert_gps_to_meters(get_closesed_fruit(game));
+
+		for (int i = 0; i<cornors.size() ; i++)
+		{
+			if (!does_hit_any_block_boolean(cornors.get(i) , game.getMypackman().getGps() , game))
+			{
+				System.out.println("edge " + box_nodes.get(i) + " " + nodes.get(cornors.size()) + " " +  convert_gps_to_meters(cornors.get(i)).distance2D(packman_meters) );
+				edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , nodes.get(cornors.size()) , convert_gps_to_meters(cornors.get(i)).distance2D(packman_meters) ) );
+				counter++;
+			}
+		}
+		for (int i = 0; i<cornors.size() ; i++)
+		{
+			if (!does_hit_any_block_boolean(cornors.get(i) , get_closesed_fruit(game) , game))
+			{
+				System.out.println("edge " + box_nodes.get(i) + " " + nodes.get(cornors.size()+1) + " " +  convert_gps_to_meters(cornors.get(i)).distance2D(fruit_meters) );
+
+				edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , nodes.get(cornors.size()+1) , convert_gps_to_meters(cornors.get(i)).distance2D(fruit_meters) ) );
+				counter++;
+			}
+		}
+		if (!does_hit_any_block_boolean(game.getMypackman().getGps() , get_closesed_fruit(game) , game))
+		{
+			System.out.println("edge " + nodes.get(cornors.size()) + " " + nodes.get(cornors.size()+1) + " " +  packman_meters.distance2D(fruit_meters) );
+			edges.add(new Edge("Edge_"+counter , nodes.get(cornors.size()), nodes.get(cornors.size()+1) , packman_meters.distance2D(fruit_meters) ) );
+			counter++;
+		}
+		Graph graph = new Graph(nodes, edges);
+        Algo dijkstra = new Algo(graph);
+        dijkstra.execute(nodes.get(cornors.size()));
+        LinkedList<Vertex> path = dijkstra.getPath(nodes.get(cornors.size()+1));
+		cornors.add(packman_meters);
+		cornors.add(fruit_meters);
+		System.out.println("path starts");
+		for (Vertex vertex : path) {
+            System.out.println(vertex);
+        }
+        return convert_meters_to_gps(cornors.get(Integer.parseInt(path.get(1).getName())));
+        
+	}
+/*
+	static private void addLane(String laneId, int sourceLocNo, int destLocNo,
+			int duration) {
+		Edge lane = new Edge(laneId,nodes.get(sourceLocNo), nodes.get(destLocNo), duration );
+		edges.add(lane);
+	}
+*/
+
+
+
 }
