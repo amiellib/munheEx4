@@ -108,7 +108,7 @@ public class GUI_Map  extends JFrame
 		{
 			if (automate && my_game.getFruit_list().size()>0)
 			{			
-				mypackman_angle = algo.get_angle(my_game.getMypackman(),  algo.get_closesed_fruit(my_game));
+				mypackman_angle = algo.get_angle(my_game.getMypackman(),  algo.get_next_point(my_game));
 			}
 			play1.rotate(mypackman_angle);
 			my_game = algo.create_game(play1.getBoard() ,my_game.getSpeed_rate());
@@ -250,6 +250,7 @@ public class GUI_Map  extends JFrame
 				{
 					e1.printStackTrace();
 				}
+				algo.create_box_edges(my_game);
 			}
 		}
 			
