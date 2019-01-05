@@ -24,7 +24,7 @@ public class Algorithms
 {
 	private static ArrayList<Edge> box_edges;
 	private static List<Vertex> box_nodes;
-
+	private static Point3D go_to_point;
 	private MyCoords cord=new MyCoords(); // to be able to do points algorithms
 	private double ORIGIN_LON , ORIGIN_LAT , CORNER_LON , CORNER_LAT , TOTAL_DISTANCE_X ,TOTAL_DISTANCE_Y ,TOTAL_DISTANCE_ANGEL_LON ,TOTAL_DISTANCE_ANGEL_LAT;
 	private Random randomNum = new Random();
@@ -114,28 +114,28 @@ public class Algorithms
 		{
 		case "top" : 
 			x_value = vector.give_y_get_x(right_top.y());
-			if (x_value>left_bottom.x()-step_value && x_value<right_top.x()+step_value && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
+			if (x_value -left_bottom.x() >0.0001-step_value && x_value -right_top.x() <-0.001+step_value && x_value - Math.max(meters_start.x(), meters_end.x()) < -0.001 && x_value - Math.min(meters_start.x(), meters_end.x()) > 0.001)
 			{
 				return true;
 			}
 			break;
 		case "bottom" :
 			x_value = vector.give_y_get_x(left_bottom.y());
-			if (x_value>left_bottom.x()-step_value && x_value<right_top.x()+step_value && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
+			if (x_value -left_bottom.x() >0.0001-step_value && x_value -right_top.x() <-0.001+step_value && x_value - Math.max(meters_start.x(), meters_end.x()) < -0.001 && x_value - Math.min(meters_start.x(), meters_end.x()) > 0.001)
 			{
 				return true;
 			}
 			break;
 		case "left" :
 			y_value = vector.give_x_get_y(left_bottom.x());
-			if (y_value<left_bottom.y()+step_value && y_value>right_top.y()-step_value && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
+			if (y_value - left_bottom.y() < -0.001+step_value && y_value - right_top.y() > 0.001-step_value && y_value - Math.max(meters_start.y(), meters_end.y()) < -0.001 && y_value - Math.min(meters_start.y(), meters_end.y()) > 0.001)
 			{
 				return true;
 			}
 			break;
 		case "right" :
 			y_value = vector.give_x_get_y(right_top.x());
-			if (y_value<left_bottom.y()+step_value && y_value>right_top.y()-step_value && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
+			if (y_value - left_bottom.y() < -0.001+step_value && y_value - right_top.y() > 0.001-step_value && y_value - Math.max(meters_start.y(), meters_end.y()) < -0.001 && y_value - Math.min(meters_start.y(), meters_end.y()) > 0.001)
 			{
 				return true;
 			}
@@ -157,34 +157,52 @@ public class Algorithms
 		{
 			Point3D left_bottom = convert_gps_to_meters(box.getGps1());
 			Point3D right_top = convert_gps_to_meters(box.getGps2());
-			if ((meters_start.x() + meters_end.x())/2 > left_bottom.x() && (meters_start.x() + meters_end.x())/2 < right_top.x() && (meters_start.y() + meters_end.y())/2 < left_bottom.y() && (meters_start.y() + meters_end.y())/2 > right_top.y()) // in box
+			if ((meters_start.x() + meters_end.x())/2 - left_bottom.x() > 0.001 && (meters_start.x() + meters_end.x())/2 - right_top.x() < -0.001 && (meters_start.y() + meters_end.y())/2 - left_bottom.y() < -0.001 && (meters_start.y() + meters_end.y())/2 - right_top.y() > 0.001) // in box
 			{
+				System.out.println("5");
 				return 5;
 			}
 			Vector vector = new Vector(meters_start , meters_end);
+			if(meters_start.y() == meters_end.y())
+			{
+//				System.out.println("right_top" + right_top.x());
+//				System.out.println("left_bottom" + left_bottom.x());
+//				System.out.println("meters_start" + meters_start.x());
+//				System.out.println("meters_end" + meters_end.x());
+
+				if (!((left_bottom.x() - meters_start.x() < 0.001 && left_bottom.x() - meters_end.x() < 0.001) || (right_top.x() - meters_start.x() > -0.001 && right_top.x() - meters_end.x() >-0.001)))
+				{
+					System.out.println("6");
+					return 6;
+				}
+			}
 			double x_value , y_value;
 			x_value = vector.give_y_get_x(right_top.y());
-			if (x_value>left_bottom.x() && x_value<right_top.x() && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
+	//		System.out.println("x_value" + x_value);
+	//		System.out.println("left_bottom" + left_bottom.x());
+	//		System.out.println("right_top" + right_top.x());
+
+			if (x_value -left_bottom.x() >0.0001 && x_value -right_top.x() <-0.001 && x_value - Math.max(meters_start.x(), meters_end.x()) < -0.001 && x_value - Math.min(meters_start.x(), meters_end.x()) > 0.001)
 			{
-	//			System.out.println("1");
+				System.out.println("1");
 				return 1;
 			}
 			x_value = vector.give_y_get_x(left_bottom.y());
-			if (x_value>left_bottom.x() && x_value<right_top.x() && x_value<Math.max(meters_start.x(), meters_end.x()) && x_value>Math.min(meters_start.x(), meters_end.x()))
+			if (x_value -left_bottom.x() >0.0001 && x_value -right_top.x() <-0.001 && x_value - Math.max(meters_start.x(), meters_end.x()) < -0.001 && x_value - Math.min(meters_start.x(), meters_end.x()) > 0.001)
 			{
-	//			System.out.println("2");
+				System.out.println("2");
 				return 2;
 			}
 			y_value = vector.give_x_get_y(left_bottom.x());
-			if (y_value<left_bottom.y() && y_value>right_top.y() && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
+			if (y_value - left_bottom.y() < -0.001 && y_value - right_top.y() > 0.001 && y_value - Math.max(meters_start.y(), meters_end.y()) < -0.001 && y_value - Math.min(meters_start.y(), meters_end.y()) > 0.001)
 			{
-	//			System.out.println("3");
+				System.out.println("3");
 				return 3;
 			}
 			y_value = vector.give_x_get_y(right_top.x());
-			if (y_value<left_bottom.y() && y_value>right_top.y() && y_value<Math.max(meters_start.y(), meters_end.y()) && y_value>Math.min(meters_start.y(), meters_end.y()))
+			if (y_value - left_bottom.y() < -0.001 && y_value - right_top.y() > 0.001 && y_value - Math.max(meters_start.y(), meters_end.y()) < -0.001 && y_value - Math.min(meters_start.y(), meters_end.y()) > 0.001)
 			{
-	//			System.out.println("4");
+				System.out.println("4");
 				return 4;
 			}
 		}			
@@ -446,8 +464,8 @@ public class Algorithms
 		for (Box box : game.getBox_list())
 		{
 			cornors.add(new Point3D(box.getGps1()));
-			cornors.add(new Point3D(box.getGps2()));
 			cornors.add(new Point3D(box.getGps1().x() , box.getGps2().y()));
+			cornors.add(new Point3D(box.getGps2()));
 			cornors.add(new Point3D(box.getGps2().x() , box.getGps1().y()));
 		}
 		return cornors;
@@ -473,6 +491,8 @@ public class Algorithms
 			//		addLane("Edge_" + i, 0, 1, 85);
 			//		new Edge(laneId,nodes.get(sourceLocNo), nodes.get(destLocNo), duration );
 					box_edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , box_nodes.get(j) , convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) ) );
+					counter++;
+					box_edges.add(new Edge("Edge_"+counter  , box_nodes.get(j) , box_nodes.get(i) , convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) ) );
 					counter++;
 				}
 			}		
@@ -503,6 +523,8 @@ public class Algorithms
 				System.out.println("edge " + box_nodes.get(i) + " " + nodes.get(cornors.size()) + " " +  convert_gps_to_meters(cornors.get(i)).distance2D(packman_meters) );
 				edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , nodes.get(cornors.size()) , convert_gps_to_meters(cornors.get(i)).distance2D(packman_meters) ) );
 				counter++;
+				edges.add(new Edge("Edge_"+counter , nodes.get(cornors.size()) , box_nodes.get(i) , convert_gps_to_meters(cornors.get(i)).distance2D(packman_meters) ) );
+				counter++;
 			}
 		}
 		for (int i = 0; i<cornors.size() ; i++)
@@ -513,6 +535,8 @@ public class Algorithms
 
 				edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , nodes.get(cornors.size()+1) , convert_gps_to_meters(cornors.get(i)).distance2D(fruit_meters) ) );
 				counter++;
+				edges.add(new Edge("Edge_"+counter , nodes.get(cornors.size()+1) , box_nodes.get(i) , convert_gps_to_meters(cornors.get(i)).distance2D(fruit_meters) ) );
+				counter++;
 			}
 		}
 		if (!does_hit_any_block_boolean(game.getMypackman().getGps() , get_closesed_fruit(game) , game))
@@ -521,17 +545,22 @@ public class Algorithms
 			edges.add(new Edge("Edge_"+counter , nodes.get(cornors.size()), nodes.get(cornors.size()+1) , packman_meters.distance2D(fruit_meters) ) );
 			counter++;
 		}
-		Graph graph = new Graph(nodes, edges);
-        Algo dijkstra = new Algo(graph);
-        dijkstra.execute(nodes.get(cornors.size()));
-        LinkedList<Vertex> path = dijkstra.getPath(nodes.get(cornors.size()+1));
-		cornors.add(packman_meters);
-		cornors.add(fruit_meters);
-		System.out.println("path starts");
-		for (Vertex vertex : path) {
-            System.out.println(vertex);
-        }
-        return convert_meters_to_gps(cornors.get(Integer.parseInt(path.get(1).getName())));
+		try
+		{
+			Graph graph = new Graph(nodes, edges);
+	        Algo dijkstra = new Algo(graph);
+	        dijkstra.execute(nodes.get(cornors.size()));
+	        LinkedList<Vertex> path = dijkstra.getPath(nodes.get(cornors.size()+1));
+			cornors.add(packman_meters);
+			cornors.add(fruit_meters);
+			System.out.println("path starts");
+			for (Vertex vertex : path) {
+	            System.out.println(vertex);
+	        }
+			go_to_point = convert_meters_to_gps(cornors.get(Integer.parseInt(path.get(1).getName())));
+		} finally{};
+		 
+        return go_to_point;
         
 	}
 /*
