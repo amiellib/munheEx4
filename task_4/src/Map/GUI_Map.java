@@ -1,4 +1,5 @@
 package Map;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.*;
@@ -30,7 +31,7 @@ public class GUI_Map  extends JFrame
 	private JMenuItem clean_map , slowdown ,automated, fast_forwards , exit , run , new_file , open, accuracy_level,my_packman;
 	private Thread thread;
 	static private Play play1 ;
-	private double time =100000.0 , mypackman_angle =0.0;
+	private double time =1000000.0 , mypackman_angle =0.0;
 	ArrayList<String> board_data ;
 	JTextField info;
 	private String data = "";
@@ -136,6 +137,11 @@ public class GUI_Map  extends JFrame
 			g.drawImage(my_game.getMypackman().getPackman_image(),(int) (algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).x())-5, (int)(algo.convert_gps_to_pixel(my_game.getMypackman().getGps(), getHeight(), getWidth()).y())-5,10, 10, null);
 
 		info.setText(data);
+		
+		g.setColor(Color.BLACK);
+		g.drawString(data, 101, 101);
+		g.setColor(Color.YELLOW);
+		g.drawString(data, 100, 100);
 		menuBarstatic.repaint();
 	}
 
@@ -271,8 +277,10 @@ public class GUI_Map  extends JFrame
 					time-=100;
 					data = play1.getStatistics();
 				}
-				repaint();
+				Thread.sleep(1000);
+				data = play1.getStatistics();
 				System.out.println(play1.getStatistics());
+				repaint();
 				play1.stop();
 				loaded = false;
 				// end game clear

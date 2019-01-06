@@ -1,7 +1,11 @@
 package Algorithems;
 
 import java.util.List;
-
+/**
+ * This class is thanks to http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html
+ * @author Shilo Gilor and Amiel Liberman
+ *
+ */
 public class Graph {
     private final List<Vertex> vertexes;
     private final List<Edge> edges;
