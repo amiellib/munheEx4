@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Game {
 
-	MyPackman mypackman;
+	MyPackman mypackman = null;
 	ArrayList<Fruit> fruit_list = new ArrayList<Fruit>();
 	ArrayList<Packman> packman_list = new ArrayList<Packman>();
 	ArrayList<Box> box_list = new ArrayList<Box>();
