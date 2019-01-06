@@ -19,7 +19,8 @@ public class Box {
 	/**
 	 * 
 	 * @param box_id is the box id
-	 * @param gps is the gps location
+	 * @param gps1 is the gps location left bottom
+	 * @param gps2 is the gps location right top
 	 * @param weight is the fruit value
 	 */
 	public Box(int box_id ,Point3D gps1 , Point3D gps2, double weight )
@@ -83,12 +84,15 @@ public class Box {
 
 	/**
 	 * 
-	 * @param gps box gps
+	 * @param gps1 box gps1
 	 */
 	public void setGps1(Point3D gps1) {
 		this.Gps1 = gps1;
 	}
-	
+	/**
+	 * 
+	 * @param gps2 box gps2
+	 */
 	public void setGps2(Point3D gps2) {
 		this.Gps2 = gps2;
 	}
