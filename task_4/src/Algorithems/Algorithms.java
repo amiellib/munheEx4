@@ -44,6 +44,12 @@ public class Algorithms
 		TOTAL_DISTANCE_ANGEL_LON = CORNER_LON - ORIGIN_LON;
 		TOTAL_DISTANCE_ANGEL_LAT = CORNER_LAT - ORIGIN_LAT;
 	}
+	/**
+	 * 
+	 * @param my_string_list is the string list of objects
+	 * @param speed is the game speed
+	 * @return a fully loaded game
+	 */
 	public Game create_game(ArrayList<String> my_string_list , double speed)
 	{
 		Game temp_game = new Game(speed);
@@ -76,7 +82,12 @@ public class Algorithms
 	{
 		return (convert_gps_to_meters(new Point3D(lat1.x() ,ORIGIN_LAT , 0)).y() - convert_gps_to_meters(new Point3D(lat2.x() ,ORIGIN_LAT , 0)).y()) / TOTAL_DISTANCE_Y;
 	}
-
+	/**
+	 * 
+	 * @param path_of_csv the dir of the file
+	 * @return a fully loaded game
+	 * @throws IOException exception
+	 */
 	public Game get_data_from_csv_4(String path_of_csv) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new FileReader(path_of_csv));
@@ -91,15 +102,13 @@ public class Algorithms
 		}
 		return create_game(my_string_list , 100);
 	}
-
-	public Point3D get_vector(Point3D mypackman ,Point3D mouse)
-	{
-		Point3D meters_start = convert_gps_to_meters(mypackman);
-		Point3D meters_end = convert_gps_to_meters(mouse);
-		Point3D vect = new Point3D(meters_end.x() - meters_start.x() , meters_end.y() - meters_start.y() , meters_end.z() - meters_start.z());
-		double t = (Math.sqrt(vect.x()*vect.x() + vect.y()*vect.y() + vect.z()*vect.z()))/10;
-		return new Point3D (vect.x() /t , vect.y()/t , vect.z()/t);
-	}
+	/**
+	 * 
+	 * @param start is the start point
+	 * @param end is the end point
+	 * @param game is the game presented
+	 * @return if the path goes through a box
+	 */
 	public boolean does_hit_any_block(Point3D start , Point3D end ,Game game)
 	{
 		Point3D meters_start = convert_gps_to_meters(start);
@@ -143,7 +152,7 @@ public class Algorithms
 			}
 		}		
 
-		for(Ghost ghost : game.getGhost_list())
+/*		for(Ghost ghost : game.getGhost_list())
 		{
 			Point3D ghost_location = convert_gps_to_meters(ghost.getGps());
 			y_value = vector.give_x_get_y(ghost_location.x());
@@ -151,9 +160,15 @@ public class Algorithms
 			{
 				return true;
 			}
-		}
+		}*/
 		return false;
 	}
+	/**
+	 * 
+	 * @param mypackman is my packman
+	 * @param mouse is the location we want to go
+	 * @return the angle needed to turn
+	 */
 	public double get_angle(MyPackman mypackman ,Point3D mouse)
 	{
 		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());
@@ -164,30 +179,14 @@ public class Algorithms
 		else 
 			return 270 + Math.toDegrees(Math.atan(vect.y()/vect.x()));
 	}
-	public Point3D move_mypackman(MyPackman mypackman ,Point3D vect)
-	{
-		Point3D meters_start = convert_gps_to_meters(mypackman.getGps());	
-		return convert_meters_to_gps(new Point3D(meters_start.x() + vect.x() , meters_start.y() + vect.y() , meters_start.z() + vect.z()));
-	}
+	/**
+	 * 
+	 * @param game is the game presented
+	 * @return a random fruit location
+	 */
 	public Point3D get_start_location(Game game)
 	{
 		return game.getFruit_list().get(randomNum.nextInt(game.getFruit_list().size()-1)).getGps();
-	}
-	public Point3D get_closesed_fruit(Game game)
-	{
-		double temp_distance;
-		int shortest_fruit_id = 0;
-		double min_value =cord.distance3d(game.getMypackman().getGps(), game.getFruit_list().get(0).getGps());
-		for (int j = 1; j<game.getFruit_list().size();j++)
-		{
-			temp_distance = cord.distance3d(game.getMypackman().getGps(), game.getFruit_list().get(j).getGps());
-			if(min_value>temp_distance && temp_distance>0.8)
-			{
-				min_value = temp_distance;
-				shortest_fruit_id = j;
-			}
-		}
-		return game.getFruit_list().get(shortest_fruit_id).getGps();
 	}
 	/**
 	 * This function converts from a pixel point to a gps point
@@ -256,6 +255,11 @@ public class Algorithms
 		}
 		return matrixmin;
 	}
+	/**
+	 * 
+	 * @param game is the game presented
+	 * @return all the cornors points
+	 */
 	public ArrayList<Point3D> get_all_box_cornors(Game game)
 	{
 		box_cornors = new ArrayList<Point3D>();
@@ -266,17 +270,20 @@ public class Algorithms
 			box_cornors.add(new Point3D(box.getGps2()));
 			box_cornors.add(new Point3D(box.getGps2().x() , box.getGps1().y()));
 		}
-		for (Ghost ghost :game.getGhost_list())
+/*		for (Ghost ghost :game.getGhost_list())
 		{
 			Point3D temp = convert_gps_to_meters(ghost.getGps());
 			box_cornors.add(new Point3D(convert_meters_to_gps(new Point3D(temp.x()+3 , temp.y()+3 , temp.z()))));
 			box_cornors.add(new Point3D(convert_meters_to_gps(new Point3D(temp.x()-3 , temp.y()+3 , temp.z()))));
 			box_cornors.add(new Point3D(convert_meters_to_gps(new Point3D(temp.x()+3 , temp.y()-3 , temp.z()))));
 			box_cornors.add(new Point3D(convert_meters_to_gps(new Point3D(temp.x()-3 , temp.y()-3 , temp.z()))));
-		}
+		}*/
 		return box_cornors;
 	}
-
+	/**
+	 * This function creates the paths able to go from box edges
+	 * @param game is the game presented
+	 */
 	public void create_box_edges(Game game)
 	{
 		box_nodes = new ArrayList<Vertex>();
@@ -294,7 +301,6 @@ public class Algorithms
 			{
 				if (!does_hit_any_block(cornors.get(i) , cornors.get(j) , game))
 				{
-	//				System.out.println("edge " + box_nodes.get(i) + " " + box_nodes.get(j) + " " +  convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) );
 					box_edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , box_nodes.get(j) , convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) ) );
 					counter++;
 					box_edges.add(new Edge("Edge_"+counter  , box_nodes.get(j) , box_nodes.get(i) , convert_gps_to_meters(cornors.get(i)).distance2D(convert_gps_to_meters(cornors.get(j))) ) );
@@ -304,6 +310,12 @@ public class Algorithms
 		}
 
 	}
+	/**
+	 * 
+	 * @param game is the game presented
+	 * @param fruit is the fruit to go to
+	 * @return the point of next point to go
+	 */
 	public Point3D get_next_point(Game game , Fruit fruit)
 	{
 		int counter=box_edges.size();
@@ -318,7 +330,7 @@ public class Algorithms
 		edges.addAll(box_edges);
 
 		Point3D packman_meters =convert_gps_to_meters(game.getMypackman().getGps());
-		Point3D fruit_meters =convert_gps_to_meters(get_closesed_fruit(game));
+		Point3D fruit_meters =convert_gps_to_meters(fruit.getGps());
 
 		for (int i = 0; i<cornors.size() ; i++)
 		{
@@ -332,7 +344,7 @@ public class Algorithms
 		}
 		for (int i = 0; i<cornors.size() ; i++)
 		{
-			if (!does_hit_any_block(cornors.get(i) , get_closesed_fruit(game) , game))
+			if (!does_hit_any_block(cornors.get(i) , fruit.getGps() , game))
 			{
 				edges.add(new Edge("Edge_"+counter , box_nodes.get(i) , nodes.get(cornors.size()+1) , convert_gps_to_meters(cornors.get(i)).distance2D(fruit_meters) ) );
 				counter++;
@@ -340,7 +352,7 @@ public class Algorithms
 				counter++;
 			}
 		}
-		if (!does_hit_any_block(game.getMypackman().getGps() , get_closesed_fruit(game) , game))
+		if (!does_hit_any_block(game.getMypackman().getGps() , fruit.getGps() , game))
 		{
 			edges.add(new Edge("Edge_"+counter , nodes.get(cornors.size()), nodes.get(cornors.size()+1) , packman_meters.distance2D(fruit_meters) ) );
 			counter++;
@@ -350,15 +362,16 @@ public class Algorithms
 		dijkstra.execute(nodes.get(cornors.size()));
 		LinkedList<Vertex> path = dijkstra.getPath(nodes.get(cornors.size()+1));
 		cornors.add(game.getMypackman().getGps());
-		cornors.add(get_closesed_fruit(game));
-/*		System.out.println("path starts");
-		for (Vertex vertex : path) {
-			System.out.println(vertex);
-		}
-*/		go_to_point = cornors.get(Integer.parseInt(path.get(1).getName()));
+		cornors.add(fruit.getGps());
+		go_to_point = cornors.get(Integer.parseInt(path.get(1).getName()));
 		return go_to_point;
 	}
-	
+	/**
+	 * 
+	 * @param game is the game presented
+	 * @param fruit is the fruit to go to
+	 * @return the distance taken to go to that fruit
+	 */
 	public double get_shortest_path(Game game , Fruit fruit)
 	{
 
@@ -407,11 +420,6 @@ public class Algorithms
 		LinkedList<Vertex> path = dijkstra.getPath(nodes.get(cornors.size()+1));
 		cornors.add(game.getMypackman().getGps());
 		cornors.add(fruit.getGps());
-/*		System.out.println("path starts");
-		for (Vertex vertex : path) {
-			System.out.println(vertex);
-		}
-*/	//	go_to_point = cornors.get(Integer.parseInt(path.get(1).getName()));
 		double total_distance =0.0;
 		for (int i=0;i<path.size()-1;i++)
 		{
@@ -419,7 +427,11 @@ public class Algorithms
 		}
 		return total_distance;
 	}
-	
+	/**
+	 * 
+	 * @param game is the game presented
+	 * @return the int of the shortest path
+	 */
 	public int from_all_path_get_shortest(Game game)
 	{
 		double temp;
@@ -436,15 +448,20 @@ public class Algorithms
 		}
 		return min_location;
 	}
+	/**
+	 * this function gets a game and return the next point the packman should go to
+	 * @param game is the game presented
+	 * @return the next point to go to
+	 */
 	public Point3D get_next(Game game)
 	{
 		Point3D me = convert_gps_to_meters(game.getMypackman().getGps());
-		if (me.x()<310 && me.x()>295 && me.y()<235 && me.y()>223)
+		if (me.x()<310 && me.x()>295 && me.y()<235 && me.y()>223) // single case gets stuck
 		{
-			return new Point3D(me.x()+10 , me.y() , me.z());
+			return  convert_meters_to_gps(new Point3D(me.x()+50 , me.y()+100 , me.z()));
 		}
 		int fruit_to_go = from_all_path_get_shortest(game);
 		return get_next_point(game , game.getFruit_list().get(fruit_to_go));
 	}
-	
+
 }

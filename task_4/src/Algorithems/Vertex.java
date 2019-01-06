@@ -1,5 +1,9 @@
 package Algorithems;
-
+/**
+ * This class is thanks to http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html
+ * @author Shilo Gilor and Amiel Liberman
+ *
+ */
 public class Vertex {
     final private String id;
     final private String name;

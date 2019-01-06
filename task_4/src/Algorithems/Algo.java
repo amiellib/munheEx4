@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * This class is thanks to http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html
+ * @author Shilo Gilor and Amiel Liberman
+ *
+ */
 public class Algo {
 
 	private final List<Vertex> nodes;
