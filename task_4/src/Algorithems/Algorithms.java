@@ -87,7 +87,7 @@ public class Algorithms
 	/**
 	 * 
 	 * @param lat1 lat of point 1 
-	 * @param lat2lat of point 2
+	 * @param lat2 lat of point 2
 	 * @return the percentage of the screen
 	 */
 	public double get_box_Y_percentage(Point3D lat1 , Point3D lat2)
