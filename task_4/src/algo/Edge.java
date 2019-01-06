@@ -1,4 +1,4 @@
-package Algorithems;
+package algo;
 
 /**
  * This class is thanks to http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html
