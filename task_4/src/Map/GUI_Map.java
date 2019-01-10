@@ -12,6 +12,7 @@ import Geom.Point3D;
 import Robot.Play;
 import entities.*;
 import entities.Box;
+import mySQL.AlgoSQL;
 
 /**
  * 
@@ -29,10 +30,12 @@ public class GUI_Map  extends JFrame
 	private JMenuItem clean_map , slowdown ,automated, fast_forwards , exit , run , new_file , open, accuracy_level,my_packman;
 	private Thread thread;
 	static private Play play1 ;
-	private double time =1000000.0 , mypackman_angle =0.0;
+	private double time =1000000.0 , mypackman_angle =0.0 , average = 0.0 , max=0.0;
+	private AlgoSQL sql_algo = new AlgoSQL();
 	ArrayList<String> board_data ;
 	JTextField info;
 	private String data = "";
+	private int hashcode;
 	public GUI_Map(Map map) throws IOException 
 	{
 		super("PackMan Map");
@@ -227,6 +230,7 @@ public class GUI_Map  extends JFrame
 						play1 = new Play(fileChooser.getSelectedFile().toString());
 						play1.setIDs(302537394 , 206328122);
 						repaint();
+						hashcode = play1.getHash1();
 					}
 				} catch (IOException e1)
 				{
@@ -250,12 +254,15 @@ public class GUI_Map  extends JFrame
 					data = play1.getStatistics();
 				}
 				Thread.sleep(1000);
-				data = play1.getStatistics();
 				System.out.println(play1.getStatistics());
-				repaint();
 				if(time<100)
 					play1.stop();
 				loaded = false;
+				average = sql_algo.get_average(hashcode);
+				max = sql_algo.get_max(hashcode);
+				data = play1.getStatistics() + " , average = " + average  + " , max = " + max ;
+				repaint();
+
 				// end game clear
 			}catch (InterruptedException e) {
 				e.printStackTrace();
