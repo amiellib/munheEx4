@@ -6,9 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * 
+ * @author Shilo Gilor and Amiel Liberman
+ *
+ */
 public class AlgoSQL 
 {
+	/**
+	 * 
+	 * @param hashcode is the hash code for the file uploaded
+	 * @return the average
+	 */
 	public double get_average(int hashcode)
 	{
 		String jdbcUrl="jdbc:mysql://ariel-oop.xyz:3306/oop"; //?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
@@ -49,6 +58,11 @@ public class AlgoSQL
 		}
 		return average;
 	}
+	/**
+	 * 
+	 * @param hashcode is the hash code for the file uploaded
+	 * @return the max value
+	 */
 	public double get_max(int hashcode)
 	{
 		String jdbcUrl="jdbc:mysql://ariel-oop.xyz:3306/oop"; //?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
