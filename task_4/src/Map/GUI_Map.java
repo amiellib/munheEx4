@@ -264,7 +264,6 @@ public class GUI_Map  extends JFrame
 					Thread.sleep((int)(100000/my_game.getSpeed_rate()));
 					time = get_time(play1.getStatistics());
 					data = play1.getStatistics();
-					System.out.println(time);
 				}
 				Thread.sleep(1000);
 				System.out.println(play1.getStatistics());
