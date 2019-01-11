@@ -6,6 +6,9 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.swing.*;
 import Algorithems.Algorithms;
 import Geom.Point3D;
@@ -30,12 +33,12 @@ public class GUI_Map  extends JFrame
 	private JMenuItem clean_map , slowdown ,automated, fast_forwards , exit , run , new_file , open, accuracy_level,my_packman;
 	private Thread thread;
 	static private Play play1 ;
-	private double time =1000000.0 , mypackman_angle =0.0 , average = 0.0 , max=0.0;
+	private double mypackman_angle =0.0 , average = 0.0 , max=0.0;
 	private AlgoSQL sql_algo = new AlgoSQL();
 	ArrayList<String> board_data ;
 	JTextField info;
 	private String data = "";
-	private int hashcode;
+	private int hashcode , time = 0;
 	public GUI_Map(Map map) throws IOException 
 	{
 		super("PackMan Map");
@@ -48,7 +51,7 @@ public class GUI_Map  extends JFrame
 		fileMenu = new JMenu("File");
 		game_menu = new JMenu("game"); 
 		speed = new JMenu("Speed"); 
-		csv=new JMenu("improt");
+		csv=new JMenu("import");
 		menuBarstatic.add(fileMenu); 
 		menuBarstatic.add(game_menu); 
 		menuBarstatic.add(speed); 
@@ -70,7 +73,7 @@ public class GUI_Map  extends JFrame
 		open = new JMenuItem("open");
 		open.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		automated = new JMenuItem("automated");
-		automated.setAccelerator(KeyStroke.getKeyStroke('A', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		automated.setAccelerator(KeyStroke.getKeyStroke('M', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		accuracy_level = new JMenuItem("accuracy_level");
 		accuracy_level.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		speed.add(slowdown);
@@ -240,19 +243,28 @@ public class GUI_Map  extends JFrame
 				algo.create_box_edges(my_game);
 			}
 		}
+		public int get_time(String str)
+		{
+			Pattern p = Pattern.compile("((?<=Time left:)\\d+)");
+			Matcher m = p.matcher(str);
+			m.find();
+			return Integer.parseInt(m.group());
+		}
 		/**
 		 * This is the new thread that repaints the movement of the packman
 		 */
 		public void thread_repainter()  
 		{
+			time = get_time(play1.getStatistics());
 			try
 			{
-				while(time>=0 && my_game.getFruit_list().size()>0)
+				while(time>0 && my_game.getFruit_list().size()>0)
 				{		
 					repaint();
 					Thread.sleep((int)(100000/my_game.getSpeed_rate()));
-					time-=100;
+					time = get_time(play1.getStatistics());
 					data = play1.getStatistics();
+					System.out.println(time);
 				}
 				Thread.sleep(1000);
 				System.out.println(play1.getStatistics());
@@ -280,7 +292,7 @@ public class GUI_Map  extends JFrame
 			if (thread!=null )
 				thread.stop();
 			my_game = new Game();
-			time =1000000.0;
+			time =0;
 			loaded = false;			
 		}
 	}
