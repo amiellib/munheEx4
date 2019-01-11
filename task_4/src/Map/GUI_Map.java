@@ -265,7 +265,7 @@ public class GUI_Map  extends JFrame
 					time = get_time(play1.getStatistics());
 					data = play1.getStatistics();
 				}
-				Thread.sleep(1000);
+				Thread.sleep(3000);
 				System.out.println(play1.getStatistics());
 				if(time<100)
 					play1.stop();
