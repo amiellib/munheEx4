@@ -24,21 +24,12 @@ public class AlgoSQL
 
 
 			Statement statement = connection.createStatement();
-			System.out.println(hashcode);
 			//select data
 			String allCustomersQuery = "SELECT * FROM logs where SomeDouble like '%" + hashcode + "%';";// where SomeDouble like  limit 10;";
 			ResultSet resultSet = statement.executeQuery(allCustomersQuery);
-		//	System.out.println("FirstID\t\tSecondID\tThirdID\t\tLogTime\t\t\t\tPoint\t\tSomeDouble");
 			while(resultSet.next())
 			{
 				counter++;
-		/*		System.out.println(resultSet.getInt("FirstID")+"\t\t" +
-						resultSet.getInt("SecondID")+"\t\t" +
-						resultSet.getInt("ThirdID")+"\t\t" +
-						resultSet.getTimestamp("LogTime") +"\t\t\t\t" +
-						resultSet.getDouble("Point") +"\t\t" +
-						resultSet.getDouble("SomeDouble")); */
-				System.out.println(resultSet.getDouble("Point"));
 				average = average + resultSet.getDouble("Point");
 			}
 			average = average/counter;
@@ -64,30 +55,17 @@ public class AlgoSQL
 		String jdbcUser="student";
 		String jdbcPassword="student";
 		double max = 0.0 ,temp = 0.0;
-		int counter = 0;
-
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = 
 					DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-
-
 			Statement statement = connection.createStatement();
-			System.out.println(hashcode);
 			//select data
-			String allCustomersQuery = "SELECT * FROM logs where SomeDouble like '%" + hashcode + "%';";// where SomeDouble like  limit 10;";
+			String allCustomersQuery = "SELECT * FROM logs where SomeDouble like '%" + hashcode + "%';";
 			ResultSet resultSet = statement.executeQuery(allCustomersQuery);
-		//	System.out.println("FirstID\t\tSecondID\tThirdID\t\tLogTime\t\t\t\tPoint\t\tSomeDouble");
+		
 			while(resultSet.next())
 			{
-				counter++;
-		/*		System.out.println(resultSet.getInt("FirstID")+"\t\t" +
-						resultSet.getInt("SecondID")+"\t\t" +
-						resultSet.getInt("ThirdID")+"\t\t" +
-						resultSet.getTimestamp("LogTime") +"\t\t\t\t" +
-						resultSet.getDouble("Point") +"\t\t" +
-						resultSet.getDouble("SomeDouble")); */
-				System.out.println(resultSet.getDouble("Point"));
 				temp = resultSet.getDouble("Point");
 				max = (max>temp) ? max : temp;
 			}
