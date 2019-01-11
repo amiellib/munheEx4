@@ -38,7 +38,7 @@ You will need to provide a map and 2 of its corner GPS locations, and then you c
 # Description 
 This program gets a map with packmans and fruits and blocks and ghosts and a main packman, so running the program will calculate a route for the main packman to go to eat all the fruits.
 
-We have 6 packages to make the packman game, we used Point3D to crate the GPS places of the game.
+We have 7 packages to make the packman game, we used Point3D to crate the GPS places of the game.
 
 i will explain the main packages:
 
