@@ -70,6 +70,7 @@ public class GUI_Map  extends JFrame
 		open = new JMenuItem("open");
 		open.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		automated = new JMenuItem("automated");
+		automated.setAccelerator(KeyStroke.getKeyStroke('A', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		accuracy_level = new JMenuItem("accuracy_level");
 		accuracy_level.setAccelerator(KeyStroke.getKeyStroke('L', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
 		speed.add(slowdown);
