@@ -453,8 +453,8 @@ public class Algorithms
 	 */
 	public Point3D get_next(Game game)
 	{
-		Point3D me = convert_gps_to_meters(game.getMypackman().getGps());
-		/*if (me.x()<300 && me.x()>290 && me.y()<235 && me.y()>223) // single case gets stuck
+		/*Point3D me = convert_gps_to_meters(game.getMypackman().getGps());
+		if (me.x()<300 && me.x()>290 && me.y()<235 && me.y()>223) // single case gets stuck
 		{
 			return  convert_meters_to_gps(new Point3D(me.x()+50 , me.y()+100 , me.z()));
 		}*/

@@ -9,7 +9,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="mysql-connector-java-5.1.47.jar"/>
-	<classpathentry kind="lib" path="D:/munheEx4/munheEx4/task_4/Graph_v0.1.jar"/>
-	<classpathentry kind="lib" path="D:/munheEx4/munheEx4/task_4/Ex4_v0.2.jar"/>
+	<classpathentry kind="lib" path="/Users/shilo/Documents/GitHub/munheEx4/task_4/Ex4_v0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
